@@ -3,7 +3,7 @@
 ## Decisiones técnicas
 
 ### Frontend
-- **Framework:** Next.js 14+ con App Router y TypeScript
+- **Framework:** Next.js 14+ (latest) con App Router y TypeScript
 - **Por qué:** SSR para SEO, stack principal del dev, deploy trivial en Vercel
 - **Estilos:** Tailwind CSS — velocidad de desarrollo, resultado visual limpio sin CSS custom
 - **Componentes UI:** shadcn/ui — componentes accesibles, sin overhead, copiables al proyecto
