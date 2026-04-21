@@ -23,8 +23,11 @@ export async function createServerClient() {
   )
 }
 
+// El cliente de service role bypasea RLS. Se usa en server actions y API routes.
+// No usa el genérico <Database> para evitar conflictos con los tipos del placeholder.
+// Cuando se regeneren los tipos con Supabase CLI, se puede agregar <Database>.
 export function createServiceRoleClient() {
-  return createSupabaseServerClient<Database>(
+  return createSupabaseServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
     {

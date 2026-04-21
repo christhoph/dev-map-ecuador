@@ -134,8 +134,8 @@ Proyecto creado como participación en el **Build with AI Challenge de GDG Quito
 
 **Cristopher Solis** — Full Stack Developer
 
-[![GitHub](https://img.shields.io/badge/GitHub-cristophersolis-181717?logo=github)](https://github.com/cristophersolis)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-cristophersolis-0A66C2?logo=linkedin)](https://linkedin.com/in/cristophersolis)
+[![GitHub](https://img.shields.io/badge/GitHub-cristophersolis-181717?logo=github)](https://github.com/christhoph)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-cristophersolis-0A66C2?logo=linkedin)](https://www.linkedin.com/in/cristophersolis/)
 
 ---
 

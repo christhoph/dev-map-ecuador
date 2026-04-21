@@ -16,6 +16,7 @@ export interface Database {
       profiles: {
         Row: {
           id: string
+          clerk_user_id: string
           username: string
           full_name: string
           email: string
@@ -31,8 +32,38 @@ export interface Database {
           created_at: string
           updated_at: string
         }
-        Insert: Omit<Database['public']['Tables']['profiles']['Row'], 'created_at' | 'updated_at'>
-        Update: Partial<Database['public']['Tables']['profiles']['Insert']>
+        Insert: {
+          clerk_user_id: string
+          username: string
+          full_name: string
+          email: string
+          avatar_url?: string | null
+          city: string
+          bio?: string | null
+          years_experience?: number | null
+          availability?: string
+          github_url?: string | null
+          linkedin_url?: string | null
+          portfolio_url?: string | null
+          is_public?: boolean
+          updated_at?: string
+        }
+        Update: {
+          clerk_user_id?: string
+          username?: string
+          full_name?: string
+          email?: string
+          avatar_url?: string | null
+          city?: string
+          bio?: string | null
+          years_experience?: number | null
+          availability?: string
+          github_url?: string | null
+          linkedin_url?: string | null
+          portfolio_url?: string | null
+          is_public?: boolean
+          updated_at?: string
+        }
       }
       technologies: {
         Row: {
@@ -41,16 +72,28 @@ export interface Database {
           category: string
           created_at: string
         }
-        Insert: Omit<Database['public']['Tables']['technologies']['Row'], 'id' | 'created_at'>
-        Update: Partial<Database['public']['Tables']['technologies']['Insert']>
+        Insert: {
+          name: string
+          category: string
+        }
+        Update: {
+          name?: string
+          category?: string
+        }
       }
       profile_technologies: {
         Row: {
           profile_id: string
           technology_id: string
         }
-        Insert: Database['public']['Tables']['profile_technologies']['Row']
-        Update: Partial<Database['public']['Tables']['profile_technologies']['Insert']>
+        Insert: {
+          profile_id: string
+          technology_id: string
+        }
+        Update: {
+          profile_id?: string
+          technology_id?: string
+        }
       }
       projects: {
         Row: {
@@ -61,8 +104,18 @@ export interface Database {
           url: string | null
           created_at: string
         }
-        Insert: Omit<Database['public']['Tables']['projects']['Row'], 'id' | 'created_at'>
-        Update: Partial<Database['public']['Tables']['projects']['Insert']>
+        Insert: {
+          profile_id: string
+          name: string
+          description?: string | null
+          url?: string | null
+        }
+        Update: {
+          profile_id?: string
+          name?: string
+          description?: string | null
+          url?: string | null
+        }
       }
     }
     Views: Record<string, never>

@@ -104,4 +104,4 @@ Sigue las convenciones de /docs/CONVENTIONS.md
 
 **Perfiles en beta:** 0 / 15 objetivo
 
-**URL de producción:** (agregar cuando esté en Vercel)
+**URL de producción:** https://dev-map-ecuador.vercel.app/
