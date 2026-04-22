@@ -43,11 +43,18 @@ export default async function RegistroPage() {
       username, full_name, city, bio, years_experience,
       availability, github_url, linkedin_url, portfolio_url, avatar_url,
       profile_technologies(technology_id),
-      projects(id, name, description, url)
+      projects(id, name, description, url),
+      work_experience(id, company, role, start_date, end_date, is_current, description)
     `
     )
     .eq('clerk_user_id', userId)
     .maybeSingle()
+
+  // Convierte YYYY-MM-DD a YYYY-MM para <input type="month">
+  const toMonthValue = (date: string | null): string | undefined => {
+    if (!date) return undefined
+    return date.slice(0, 7)
+  }
 
   const initialProfile: InitialProfile | null = profileData
     ? {
@@ -72,6 +79,25 @@ export default async function RegistroPage() {
             url: p.url ?? undefined,
           })
         ),
+        work_experience: (profileData.work_experience as {
+          id: string
+          company: string
+          role: string
+          start_date: string
+          end_date: string | null
+          is_current: boolean
+          description: string | null
+        }[])
+          .sort((a, b) => b.start_date.localeCompare(a.start_date))
+          .map((w) => ({
+            id: w.id,
+            company: w.company,
+            role: w.role,
+            start_date: toMonthValue(w.start_date) ?? '',
+            end_date: toMonthValue(w.end_date),
+            is_current: w.is_current,
+            description: w.description ?? undefined,
+          })),
       }
     : null
 

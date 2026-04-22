@@ -86,10 +86,15 @@ Cada página describe su objetivo, datos que necesita, componentes principales y
 3. **Stack tecnológico**
    - Badges agrupados por categoría (Frontend, Backend, Mobile, etc.)
 
-4. **Proyectos destacados**
+4. **Experiencia laboral**
+   - Entradas ordenadas por fecha de inicio DESC
+   - Cada entrada: rol, empresa, rango de fechas (`formatDateRange`), badge "Actual" si is_current, descripción opcional
+   - Solo se renderiza si hay al menos una entrada
+
+5. **Proyectos destacados**
    - Cards con nombre, descripción y link (máx 3)
 
-5. **Acción (solo visible para el dueño del perfil)**
+6. **Acción (solo visible para el dueño del perfil)**
    - Botón "Editar perfil" visible solo si el usuario autenticado es el dueño
 
 ---
@@ -127,6 +132,12 @@ Cada página describe su objetivo, datos que necesita, componentes principales y
 - Cada uno: nombre, descripción (max 300 chars), URL
 - Botón para agregar/eliminar proyectos dinámicamente
 
+**Experiencia laboral (sección separada dentro del mismo formulario):**
+- Hasta 5 entradas
+- Cada una: empresa (requerido), rol (requerido), checkbox "trabajo actual", fecha inicio (month input, requerido), fecha fin (month input, deshabilitado si is_current), descripción (max 300 chars con contador)
+- Validación: fecha fin > fecha inicio cuando no es trabajo actual
+- Botón para agregar/eliminar entradas dinámicamente
+
 **Validación:**
 - Formulario con react-hook-form + zod para validación del lado cliente
 - Username único verificado contra Supabase antes de guardar
@@ -134,7 +145,8 @@ Cada página describe su objetivo, datos que necesita, componentes principales y
 **Al guardar:**
 - Upsert en tabla `profiles`
 - Eliminar y reinsertar en `profile_technologies`
-- Upsert en `projects`
+- Eliminar y reinsertar en `projects`
+- Eliminar y reinsertar en `work_experience`
 - Redirigir a `/devs/[username]` con toast de éxito
 
 ---

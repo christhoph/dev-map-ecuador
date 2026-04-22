@@ -27,6 +27,18 @@ export interface Project {
   url?: string
 }
 
+export interface WorkExperience {
+  id: string
+  profile_id: string
+  company: string
+  role: string
+  start_date: string
+  end_date?: string
+  is_current: boolean
+  description?: string
+  created_at: string
+}
+
 export interface DevProfile {
   id: string
   username: string
@@ -43,6 +55,7 @@ export interface DevProfile {
   is_public: boolean
   technologies: Technology[]
   projects: Project[]
+  work_experience: WorkExperience[]
   created_at: string
 }
 

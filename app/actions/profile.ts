@@ -12,6 +12,16 @@ interface ProjectInput {
   url?: string
 }
 
+interface WorkExperienceInput {
+  id?: string
+  company: string
+  role: string
+  start_date: string
+  end_date?: string
+  is_current: boolean
+  description?: string
+}
+
 export interface SaveProfileInput {
   username: string
   full_name: string
@@ -25,6 +35,7 @@ export interface SaveProfileInput {
   avatar_url?: string
   technologies: string[]
   projects: ProjectInput[]
+  work_experience: WorkExperienceInput[]
 }
 
 export interface SaveProfileResult {
@@ -114,6 +125,27 @@ export async function saveProfile(data: SaveProfileInput): Promise<SaveProfileRe
       )
       if (projectError) {
         return { success: false, error: 'Error al guardar los proyectos' }
+      }
+    }
+
+    // 4. Reemplazar experiencia laboral (delete + insert)
+    await supabase.from('work_experience').delete().eq('profile_id', profileId)
+
+    if (data.work_experience.length > 0) {
+      const toDate = (s: string) => (s.length === 7 ? `${s}-01` : s)
+      const { error: weError } = await supabase.from('work_experience').insert(
+        data.work_experience.map((w) => ({
+          profile_id: profileId,
+          company: w.company,
+          role: w.role,
+          start_date: toDate(w.start_date),
+          end_date: w.end_date ? toDate(w.end_date) : null,
+          is_current: w.is_current,
+          description: w.description || null,
+        }))
+      )
+      if (weError) {
+        return { success: false, error: 'Error al guardar la experiencia laboral' }
       }
     }
 

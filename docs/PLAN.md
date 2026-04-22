@@ -366,8 +366,8 @@ Resumen ejecutivo de los hallazgos más importantes. Leer antes de retomar el pr
 ## Post-evento — Features adicionales
 
 - [x] Página /feedback con formulario y tabla en Supabase
+- [x] Sección de experiencia laboral en perfil
 - [ ] Importación desde GitHub API
-- [ ] Sección de experiencia laboral en perfil
 - [ ] Modo oscuro
 - [ ] Tests unitarios
 

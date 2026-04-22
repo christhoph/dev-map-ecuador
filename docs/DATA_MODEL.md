@@ -142,6 +142,42 @@ CREATE TABLE projects (
 
 ---
 
+### `work_experience`
+
+Historial de experiencia laboral destacada del dev (roles, empresas y fechas).
+
+```sql
+CREATE TABLE work_experience (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  profile_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
+  company TEXT NOT NULL,
+  role TEXT NOT NULL,
+  start_date DATE NOT NULL,
+  end_date DATE,
+  is_current BOOLEAN DEFAULT false,
+  description TEXT,           -- Max 500 chars
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- RLS
+ALTER TABLE work_experience ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Experiencia laboral visible para todos"
+  ON work_experience FOR SELECT
+  USING (true);
+
+CREATE POLICY "Usuario gestiona su experiencia laboral"
+  ON work_experience FOR ALL
+  USING (
+    profile_id IN (
+      SELECT id FROM profiles
+      WHERE clerk_user_id = current_setting('app.clerk_user_id', true)
+    )
+  );
+```
+
+---
+
 ### `feedback`
 Reportes de bugs, mejoras y sugerencias enviados por los usuarios desde `/feedback`. No requiere autenticación.
 

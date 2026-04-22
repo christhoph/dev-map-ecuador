@@ -26,8 +26,10 @@ import {
   CITIES_ECUADOR,
   AVAILABILITY_LABELS,
   MAX_PROJECTS,
+  MAX_WORK_EXPERIENCE,
   MAX_BIO_CHARS,
   MAX_PROJECT_DESC_CHARS,
+  MAX_WORK_EXP_DESC_CHARS,
   MIN_USERNAME_LENGTH,
   MAX_USERNAME_LENGTH,
 } from '@/lib/constants'
@@ -43,6 +45,16 @@ interface InitialProject {
   url?: string
 }
 
+interface InitialWorkExperience {
+  id?: string
+  company: string
+  role: string
+  start_date: string
+  end_date?: string
+  is_current: boolean
+  description?: string
+}
+
 export interface InitialProfile {
   username: string
   full_name: string
@@ -56,6 +68,7 @@ export interface InitialProfile {
   avatar_url?: string
   technologies: string[]
   projects: InitialProject[]
+  work_experience: InitialWorkExperience[]
 }
 
 interface ProfileFormProps {
@@ -77,6 +90,29 @@ const projectSchema = z.object({
     .optional(),
   url: urlOrEmpty.optional(),
 })
+
+const workExperienceSchema = z
+  .object({
+    id: z.string().optional(),
+    company: z.string().min(1, 'Empresa requerida'),
+    role: z.string().min(1, 'Rol requerido'),
+    is_current: z.boolean(),
+    start_date: z.string().min(1, 'Fecha de inicio requerida'),
+    end_date: z.string().optional(),
+    description: z
+      .string()
+      .max(MAX_WORK_EXP_DESC_CHARS, `Máximo ${MAX_WORK_EXP_DESC_CHARS} caracteres`)
+      .optional(),
+  })
+  .superRefine((val, ctx) => {
+    if (!val.is_current && val.end_date && val.start_date && val.end_date <= val.start_date) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'La fecha fin debe ser posterior a la fecha de inicio',
+        path: ['end_date'],
+      })
+    }
+  })
 
 const profileSchema = z.object({
   username: z
@@ -100,6 +136,7 @@ const profileSchema = z.object({
   avatar_url: urlOrEmpty.optional(),
   technologies: z.array(z.string()).min(1, 'Selecciona al menos una tecnología'),
   projects: z.array(projectSchema).max(MAX_PROJECTS),
+  work_experience: z.array(workExperienceSchema).max(MAX_WORK_EXPERIENCE),
 })
 
 type ProfileFormData = z.infer<typeof profileSchema>
@@ -150,10 +187,12 @@ export function ProfileForm({
       avatar_url: initialProfile?.avatar_url ?? '',
       technologies: initialProfile?.technologies ?? [],
       projects: initialProfile?.projects ?? [],
+      work_experience: initialProfile?.work_experience ?? [],
     },
   })
 
   const { fields, append, remove } = useFieldArray({ control, name: 'projects' })
+  const { fields: workFields, append: appendWork, remove: removeWork } = useFieldArray({ control, name: 'work_experience' })
 
   const watchedBio = watch('bio')
 
@@ -196,6 +235,11 @@ export function ProfileForm({
       linkedin_url: data.linkedin_url || undefined,
       portfolio_url: data.portfolio_url || undefined,
       avatar_url: data.avatar_url || undefined,
+      work_experience: data.work_experience.map((w) => ({
+        ...w,
+        end_date: w.is_current ? undefined : w.end_date || undefined,
+        description: w.description || undefined,
+      })),
     })
 
     if (result.success && result.username) {
@@ -539,6 +583,154 @@ export function ProfileForm({
 
         {errors.projects && !Array.isArray(errors.projects) && (
           <p className="text-sm text-destructive">{errors.projects.message}</p>
+        )}
+      </section>
+
+      {/* ── Experiencia laboral ────────────────────────────────────────────── */}
+      <section className="space-y-4">
+        <div className="flex items-center justify-between border-b pb-2">
+          <div>
+            <h2 className="text-xl font-semibold text-indigo-600">Experiencia laboral</h2>
+            <p className="text-sm text-muted-foreground mt-0.5">
+              Hasta {MAX_WORK_EXPERIENCE} entradas
+            </p>
+          </div>
+          {workFields.length < MAX_WORK_EXPERIENCE && (
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => appendWork({ company: '', role: '', is_current: false, start_date: '', end_date: '', description: '' })}
+              className="border-indigo-300 text-indigo-600 hover:bg-indigo-50"
+            >
+              <Plus className="h-4 w-4 mr-1.5" />
+              Agregar experiencia
+            </Button>
+          )}
+        </div>
+
+        {workFields.length === 0 && (
+          <p className="text-sm text-muted-foreground py-4 text-center">
+            No has agregado experiencia laboral aún.
+          </p>
+        )}
+
+        {workFields.map((field, index) => {
+          const isCurrent = watch(`work_experience.${index}.is_current`)
+          const descLen = (watch(`work_experience.${index}.description`) ?? '').length
+          return (
+            <div key={field.id} className="border border-slate-200 rounded-lg p-4 space-y-3 bg-slate-50">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">Experiencia {index + 1}</span>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => removeWork(index)}
+                  className="text-destructive hover:text-destructive"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium">
+                  Empresa <span className="text-destructive">*</span>
+                </label>
+                <Input
+                  {...register(`work_experience.${index}.company`)}
+                  placeholder="Nombre de la empresa"
+                  className={errors.work_experience?.[index]?.company ? 'border-destructive' : ''}
+                />
+                {errors.work_experience?.[index]?.company && (
+                  <p className="text-sm text-destructive">{errors.work_experience[index]?.company?.message}</p>
+                )}
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium">
+                  Rol <span className="text-destructive">*</span>
+                </label>
+                <Input
+                  {...register(`work_experience.${index}.role`)}
+                  placeholder="Ej: Frontend Developer"
+                  className={errors.work_experience?.[index]?.role ? 'border-destructive' : ''}
+                />
+                {errors.work_experience?.[index]?.role && (
+                  <p className="text-sm text-destructive">{errors.work_experience[index]?.role?.message}</p>
+                )}
+              </div>
+
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id={`work-current-${index}`}
+                  {...register(`work_experience.${index}.is_current`)}
+                  className="h-4 w-4 rounded border-slate-300 accent-indigo-600 cursor-pointer"
+                />
+                <label htmlFor={`work-current-${index}`} className="text-sm cursor-pointer">
+                  Trabajo actual
+                </label>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium">
+                    Fecha inicio <span className="text-destructive">*</span>
+                  </label>
+                  <Input
+                    type="month"
+                    {...register(`work_experience.${index}.start_date`)}
+                    className={errors.work_experience?.[index]?.start_date ? 'border-destructive' : ''}
+                  />
+                  {errors.work_experience?.[index]?.start_date && (
+                    <p className="text-sm text-destructive">{errors.work_experience[index]?.start_date?.message}</p>
+                  )}
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className={cn('text-sm font-medium', isCurrent && 'text-muted-foreground')}>
+                    Fecha fin
+                  </label>
+                  <Input
+                    type="month"
+                    disabled={isCurrent}
+                    {...register(`work_experience.${index}.end_date`)}
+                    className={cn(
+                      errors.work_experience?.[index]?.end_date ? 'border-destructive' : '',
+                      isCurrent && 'opacity-50'
+                    )}
+                  />
+                  {errors.work_experience?.[index]?.end_date && (
+                    <p className="text-sm text-destructive">{errors.work_experience[index]?.end_date?.message}</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <label className="text-sm font-medium">Descripción</label>
+                  <span className={cn('text-xs', descLen > 270 ? 'text-red-500' : 'text-muted-foreground')}>
+                    {descLen} / {MAX_WORK_EXP_DESC_CHARS}
+                  </span>
+                </div>
+                <Textarea
+                  {...register(`work_experience.${index}.description`)}
+                  placeholder="Describe brevemente tu rol y logros..."
+                  rows={2}
+                  maxLength={MAX_WORK_EXP_DESC_CHARS}
+                  className={errors.work_experience?.[index]?.description ? 'border-destructive' : ''}
+                />
+                {errors.work_experience?.[index]?.description && (
+                  <p className="text-sm text-destructive">{errors.work_experience[index]?.description?.message}</p>
+                )}
+              </div>
+            </div>
+          )
+        })}
+
+        {errors.work_experience && !Array.isArray(errors.work_experience) && (
+          <p className="text-sm text-destructive">{errors.work_experience.message}</p>
         )}
       </section>
 

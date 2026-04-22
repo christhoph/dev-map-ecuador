@@ -17,7 +17,7 @@ import {
 
 import { createServiceRoleClient } from '@/lib/supabase/server'
 import { AVAILABILITY_LABELS, AVAILABILITY_COLORS } from '@/lib/constants'
-import { getInitials, cn } from '@/lib/utils'
+import { getInitials, formatDateRange, cn } from '@/lib/utils'
 import type { TechCategory, Availability } from '@/types'
 
 // ─── Tipos locales ────────────────────────────────────────────────────────────
@@ -49,6 +49,15 @@ interface ProfileRow {
     name: string
     description: string | null
     url: string | null
+  }[]
+  work_experience: {
+    id: string
+    company: string
+    role: string
+    start_date: string
+    end_date: string | null
+    is_current: boolean
+    description: string | null
   }[]
 }
 
@@ -129,7 +138,8 @@ export default async function DevProfilePage({ params }: PageProps) {
       profile_technologies(
         technologies(id, name, category)
       ),
-      projects(id, name, description, url)
+      projects(id, name, description, url),
+      work_experience(id, company, role, start_date, end_date, is_current, description)
     `
     )
     .eq('username', username)
@@ -295,6 +305,39 @@ export default async function DevProfilePage({ params }: PageProps) {
                 </div>
               </div>
             ))}
+          </div>
+        </section>
+      )}
+
+      {/* ── Experiencia laboral ────────────────────────────────────────────── */}
+      {profileData.work_experience.length > 0 && (
+        <section>
+          <h2 className="text-lg font-semibold mb-4">Experiencia laboral</h2>
+          <div className="space-y-4">
+            {[...profileData.work_experience]
+              .sort((a, b) => b.start_date.localeCompare(a.start_date))
+              .map((w) => (
+                <div key={w.id} className="flex gap-4 border-l-4 border-indigo-200 pl-4">
+                  <Briefcase className="h-4 w-4 text-indigo-500 mt-0.5 shrink-0" />
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <p className="font-semibold text-slate-800">{w.role}</p>
+                      {w.is_current && (
+                        <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
+                          Actual
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-slate-600">{w.company}</p>
+                    <p className="text-sm text-slate-400 mt-0.5">
+                      {formatDateRange(w.start_date, w.end_date ?? undefined, w.is_current)}
+                    </p>
+                    {w.description && (
+                      <p className="mt-1 text-sm text-slate-500 leading-relaxed">{w.description}</p>
+                    )}
+                  </div>
+                </div>
+              ))}
           </div>
         </section>
       )}
