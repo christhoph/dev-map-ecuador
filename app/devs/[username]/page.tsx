@@ -75,34 +75,39 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const { data } = await supabase
     .from('profiles')
-    .select('full_name, bio, avatar_url, city, availability')
+    .select('full_name, bio, avatar_url, city, availability, profile_technologies(technologies(name))')
     .eq('username', username)
     .maybeSingle()
 
   if (!data) {
-    return { title: 'Perfil no encontrado — DevMap Ecuador' }
+    return { title: 'Perfil no encontrado' }
   }
 
-  const title = `${data.full_name} (@${username}) — DevMap Ecuador`
+  const firstTech = (data.profile_technologies as unknown as { technologies: { name: string } | null }[])?.[0]?.technologies?.name
+  const availabilityLabel = AVAILABILITY_LABELS[data.availability as Availability] ?? String(data.availability)
   const description =
     data.bio ??
-    `Perfil de ${data.full_name} en DevMap Ecuador. ${data.city}, Ecuador.`
+    `Desarrollador${firstTech ? ` ${firstTech}` : ''} en ${data.city}. Disponibilidad: ${availabilityLabel}.`
+
+  const ogImage = data.avatar_url
+    ? { url: data.avatar_url, alt: data.full_name }
+    : { url: '/og', width: 1200, height: 630, alt: 'DevMap Ecuador' }
 
   return {
-    title,
+    title: `${data.full_name} (@${username})`,
     description,
     openGraph: {
-      title,
+      title: data.full_name,
       description,
       type: 'profile',
-      images: data.avatar_url ? [{ url: data.avatar_url, alt: data.full_name }] : [],
+      images: [ogImage],
       url: `${process.env.NEXT_PUBLIC_APP_URL}/devs/${username}`,
     },
     twitter: {
-      card: 'summary',
-      title,
+      card: 'summary_large_image',
+      title: data.full_name,
       description,
-      images: data.avatar_url ? [data.avatar_url] : [],
+      images: [ogImage.url],
     },
   }
 }

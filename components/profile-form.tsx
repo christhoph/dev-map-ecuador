@@ -18,6 +18,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { MultiSelect } from '@/components/ui/multi-select'
+import type { MultiSelectOption } from '@/components/ui/multi-select'
 
 import { saveProfile } from '@/app/actions/profile'
 import {
@@ -130,7 +132,6 @@ export function ProfileForm({
     handleSubmit,
     control,
     watch,
-    setValue,
     setError,
     clearErrors,
     formState: { errors, isSubmitting },
@@ -154,18 +155,17 @@ export function ProfileForm({
 
   const { fields, append, remove } = useFieldArray({ control, name: 'projects' })
 
-  const watchedTechs = watch('technologies')
   const watchedBio = watch('bio')
 
-  // ─── Handlers ───────────────────────────────────────────────────────────────
+  // ─── Computed ───────────────────────────────────────────────────────────────
 
-  const toggleTech = (techId: string) => {
-    const current = watchedTechs ?? []
-    const next = current.includes(techId)
-      ? current.filter((id) => id !== techId)
-      : [...current, techId]
-    setValue('technologies', next, { shouldValidate: true })
-  }
+  const techOptions: MultiSelectOption[] = TECH_CATEGORY_ORDER.flatMap((category) =>
+    technologies
+      .filter((t) => (t.category as TechCategory) === category)
+      .map((t) => ({ value: t.id, label: t.name }))
+  )
+
+  // ─── Handlers ───────────────────────────────────────────────────────────────
 
   const handleUsernameBlur = async (value: string) => {
     if (!value || value.length < MIN_USERNAME_LENGTH) return
@@ -208,17 +208,6 @@ export function ProfileForm({
       }
     }
   }
-
-  // ─── Agrupar tecnologías por categoría ──────────────────────────────────────
-
-  const techsByCategory = TECH_CATEGORY_ORDER.reduce<Partial<Record<TechCategory, Technology[]>>>(
-    (acc, category) => {
-      const group = technologies.filter((t) => (t.category as TechCategory) === category)
-      if (group.length > 0) acc[category] = group
-      return acc
-    },
-    {}
-  )
 
   // ─── Render ─────────────────────────────────────────────────────────────────
 
@@ -432,31 +421,19 @@ export function ProfileForm({
           </p>
         </div>
 
-        {Object.entries(techsByCategory).map(([category, techs]) => (
-          <div key={category} className="space-y-2">
-            <p className="text-sm font-medium text-slate-700">{category}</p>
-            <div className="flex flex-wrap gap-2">
-              {techs!.map((tech) => {
-                const selected = (watchedTechs ?? []).includes(tech.id)
-                return (
-                  <button
-                    key={tech.id}
-                    type="button"
-                    onClick={() => toggleTech(tech.id)}
-                    className={cn(
-                      'inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-medium transition-colors cursor-pointer select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300',
-                      selected
-                        ? 'bg-indigo-100 text-indigo-700 border-indigo-300'
-                        : 'border-slate-200 bg-white hover:bg-indigo-50 hover:border-indigo-200'
-                    )}
-                  >
-                    {tech.name}
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-        ))}
+        <Controller
+          control={control}
+          name="technologies"
+          render={({ field }) => (
+            <MultiSelect
+              options={techOptions}
+              selected={field.value}
+              onChange={field.onChange}
+              placeholder="Busca y selecciona tus tecnologías..."
+              searchPlaceholder="Buscar tecnologías..."
+            />
+          )}
+        />
 
         {errors.technologies && (
           <p className="text-sm text-destructive">{errors.technologies.message}</p>

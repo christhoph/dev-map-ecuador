@@ -12,10 +12,33 @@ const inter = Inter({
   subsets: ['latin'],
 })
 
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://dev-map-ecuador.vercel.app'
+
+const OG_DESCRIPTION =
+  'Encuentra desarrolladores ecuatorianos, explora sus stacks y conecta con el ecosistema. Potenciado con IA.'
+
 export const metadata: Metadata = {
-  title: 'DevMap Ecuador — Directorio del talento tech ecuatoriano',
-  description:
-    'Descubre desarrolladores ecuatorianos, explora su stack tecnológico y conecta con el ecosistema tech del Ecuador.',
+  title: {
+    default: 'DevMap Ecuador — El directorio del talento tech ecuatoriano',
+    template: '%s — DevMap Ecuador',
+  },
+  description: OG_DESCRIPTION,
+  metadataBase: new URL(APP_URL),
+  openGraph: {
+    title: 'DevMap Ecuador',
+    description: OG_DESCRIPTION,
+    url: APP_URL,
+    siteName: 'DevMap Ecuador',
+    locale: 'es_EC',
+    type: 'website',
+    images: [{ url: '/og', width: 1200, height: 630, alt: 'DevMap Ecuador' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'DevMap Ecuador',
+    description: OG_DESCRIPTION,
+    images: ['/og'],
+  },
 }
 
 export default function RootLayout({

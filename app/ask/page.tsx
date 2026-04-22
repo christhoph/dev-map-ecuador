@@ -3,9 +3,9 @@ import type { Metadata } from 'next'
 import { AskChat } from '@/components/ask-chat'
 
 export const metadata: Metadata = {
-  title: 'Pregúntale a la IA — DevMap Ecuador',
+  title: 'Pregunta a la IA',
   description:
-    'Consulta sobre el talento tech ecuatoriano con inteligencia artificial. Encuentra devs por tecnología, ciudad y disponibilidad.',
+    'Pregúntale a nuestra IA sobre el ecosistema tech ecuatoriano. Datos reales del directorio de devs.',
 }
 
 export default function AskPage() {
