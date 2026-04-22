@@ -19,6 +19,23 @@ import {
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
 
+// ─── Labels locales ───────────────────────────────────────────────────────────
+
+const TIPO_LABELS: Record<string, string> = {
+  bug: 'Bug encontrado',
+  mejora: 'Mejora al diseño o UX',
+  feature: 'Sugerencia de nueva feature',
+}
+
+const PAGE_LABELS: Record<string, string> = {
+  landing: 'Landing (inicio)',
+  directorio: 'Directorio de devs',
+  perfil: 'Perfil público',
+  ask: 'Pregunta a la IA',
+  registro: 'Formulario de registro',
+  otra: 'Otra / No aplica',
+}
+
 // ─── Schema ───────────────────────────────────────────────────────────────────
 
 const MAX_DESCRIPTION = 500
@@ -135,7 +152,9 @@ export function FeedbackForm() {
           render={({ field }) => (
             <Select value={field.value} onValueChange={field.onChange}>
               <SelectTrigger className={errors.type ? 'border-destructive' : ''}>
-                <SelectValue placeholder="Selecciona un tipo" />
+                <SelectValue placeholder="Selecciona un tipo">
+                  {field.value ? TIPO_LABELS[field.value] : undefined}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent className="w-full">
                 <SelectItem value="bug">Bug encontrado</SelectItem>
@@ -199,7 +218,9 @@ export function FeedbackForm() {
               onValueChange={(v) => field.onChange(v || undefined)}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Selecciona una página (opcional)" />
+                <SelectValue placeholder="Selecciona una página (opcional)">
+                  {field.value ? PAGE_LABELS[field.value] : undefined}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent className="w-full">
                 <SelectItem value="landing">Landing (inicio)</SelectItem>

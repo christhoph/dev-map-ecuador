@@ -8,6 +8,7 @@ import { Menu, X } from 'lucide-react'
 
 import { buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { useProfileLink } from '@/hooks/use-profile-link'
 
 const NAV_LINKS = [
   { href: '/devs', label: 'Directorio' },
@@ -18,6 +19,7 @@ export function Nav() {
   const { isSignedIn } = useAuth()
   const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = useState(false)
+  const { profileUrl } = useProfileLink()
 
   const closeMenu = () => setMobileOpen(false)
 
@@ -57,7 +59,7 @@ export function Nav() {
             {isSignedIn ? (
               <>
                 <Link
-                  href="/register"
+                  href={profileUrl}
                   className={cn(
                     buttonVariants({ variant: 'ghost', size: 'sm' }),
                     'text-muted-foreground hover:text-foreground'
@@ -117,7 +119,7 @@ export function Nav() {
             <div className="mt-2 flex flex-col gap-2 border-t pt-3">
               {isSignedIn ? (
                 <Link
-                  href="/register"
+                  href={profileUrl}
                   onClick={closeMenu}
                   className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'justify-start')}
                 >

@@ -141,7 +141,7 @@ export default async function HomePage() {
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section className="border-b bg-gradient-to-b from-indigo-50 via-white to-blue-50">
         <div className="container mx-auto max-w-6xl px-4 py-20 text-center">
-          <Badge variant="secondary" className="mb-4 text-xs">
+          <Badge variant="secondary" className="mb-4 text-xs bg-primary-foreground">
             Build with AI Challenge — GDG Quito 2026
           </Badge>
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
@@ -294,7 +294,7 @@ export default async function HomePage() {
                 {SUGGESTED_QUESTIONS.map((q) => (
                   <div
                     key={q}
-                    className="rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm text-slate-400"
+                    className="rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm text-slate-400 cursor-pointer"
                   >
                     &ldquo;{q}&rdquo;
                   </div>

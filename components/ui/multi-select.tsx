@@ -90,13 +90,21 @@ export function MultiSelect({
                   className="inline-flex items-center gap-0.5 rounded-full bg-indigo-100 px-2 py-0.5 text-xs text-indigo-700"
                 >
                   {opt.label}
-                  <button
-                    type="button"
+                  <span
+                    role="button"
+                    aria-label={`Remover ${opt.label}`}
+                    tabIndex={0}
                     onClick={(e) => remove(opt.value, e)}
-                    className="cursor-pointer text-indigo-400 hover:text-indigo-700 transition-colors"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.stopPropagation()
+                        onChange(selected.filter((v) => v !== opt.value))
+                      }
+                    }}
+                    className="cursor-pointer text-indigo-400 hover:text-indigo-700 transition-colors ml-1 rounded-full"
                   >
                     <X className="h-3 w-3" />
-                  </button>
+                  </span>
                 </span>
               ))}
               {extraCount > 0 && (

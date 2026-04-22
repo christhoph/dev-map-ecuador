@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { Plus, Trash2, Loader2 } from 'lucide-react'
+import { Plus, Trash2, Loader2, Info } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -21,7 +21,10 @@ import {
 import { MultiSelect } from '@/components/ui/multi-select'
 import type { MultiSelectOption } from '@/components/ui/multi-select'
 
+import { useAuth } from '@clerk/nextjs'
+
 import { saveProfile } from '@/app/actions/profile'
+import { profileCache } from '@/hooks/use-profile-link'
 import {
   CITIES_ECUADOR,
   AVAILABILITY_LABELS,
@@ -162,6 +165,7 @@ export function ProfileForm({
   suggestedUsername,
 }: ProfileFormProps) {
   const router = useRouter()
+  const { userId } = useAuth()
   const [checkingUsername, setCheckingUsername] = useState(false)
 
   const {
@@ -243,6 +247,7 @@ export function ProfileForm({
     })
 
     if (result.success && result.username) {
+      if (userId) profileCache.delete(userId)
       toast.success('¡Perfil guardado exitosamente!')
       router.push(`/devs/${result.username}`)
     } else {
@@ -341,7 +346,9 @@ export function ProfileForm({
             render={({ field }) => (
               <Select value={field.value} onValueChange={field.onChange}>
                 <SelectTrigger className={errors.availability ? 'border-destructive' : ''}>
-                  <SelectValue placeholder="Selecciona tu disponibilidad" />
+                  <SelectValue placeholder="Selecciona tu disponibilidad">
+                    {field.value ? AVAILABILITY_LABELS[field.value as Availability] : undefined}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent className="w-full">
                   {(Object.entries(AVAILABILITY_LABELS) as [Availability, string][]).map(
@@ -465,6 +472,11 @@ export function ProfileForm({
           </p>
         </div>
 
+        <p className="mt-0.5 mb-2 text-xs text-slate-500 italic">
+          <Info className="h-3 w-3 text-indigo-400 inline mr-1" />
+          Las primeras 3 tecnologías que selecciones aparecerán destacadas en tu perfil y se contabilizarán en el ranking del ecosistema. Elige primero las que más usas.
+        </p>
+
         <Controller
           control={control}
           name="technologies"
@@ -499,7 +511,7 @@ export function ProfileForm({
               variant="outline"
               size="sm"
               onClick={() => append({ name: '', description: '', url: '' })}
-              className="border-indigo-300 text-indigo-600 hover:bg-indigo-50"
+              className="border-indigo-300 text-indigo-600 hover:bg-indigo-50 cursor-pointer"
             >
               <Plus className="h-4 w-4 mr-1.5" />
               Agregar proyecto
@@ -522,7 +534,7 @@ export function ProfileForm({
                 variant="ghost"
                 size="sm"
                 onClick={() => remove(index)}
-                className="text-destructive hover:text-destructive"
+                className="text-destructive hover:text-destructive cursor-pointer"
               >
                 <Trash2 className="h-4 w-4" />
               </Button>
@@ -736,7 +748,7 @@ export function ProfileForm({
 
       {/* ── Submit ─────────────────────────────────────────────────────────── */}
       <div className="pt-2">
-        <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
+        <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto cursor-pointer">
           {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {isSubmitting ? 'Guardando...' : initialProfile ? 'Guardar cambios' : 'Crear perfil'}
         </Button>

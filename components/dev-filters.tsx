@@ -144,7 +144,9 @@ export function DevFilters({ initialProfiles, technologies }: DevFiltersProps) {
               onValueChange={(value) => setSelectedAvailability(value ?? '')}
             >
               <SelectTrigger className="w-full bg-white">
-                <SelectValue placeholder="Todas" />
+                <SelectValue placeholder="Todas">
+                  {selectedAvailability ? AVAILABILITY_LABELS[selectedAvailability as Availability] : undefined}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent className="w-full">
                 <SelectItem value="">Todas</SelectItem>
