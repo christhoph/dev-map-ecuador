@@ -150,6 +150,8 @@ const TECH_CATEGORY_ORDER: TechCategory[] = [
   'Frontend',
   'Backend',
   'Mobile',
+  'Design',
+  'Design System',
   'DevOps',
   'Data',
   'Gaming',

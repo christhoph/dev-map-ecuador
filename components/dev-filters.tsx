@@ -21,6 +21,8 @@ const TECH_CATEGORIES: TechCategory[] = [
   'Frontend',
   'Backend',
   'Mobile',
+  'Design',
+  'Design System',
   'DevOps',
   'Data',
   'Testing',
@@ -202,8 +204,8 @@ export function DevFilters({ initialProfiles, technologies }: DevFiltersProps) {
             {filteredProfiles.length === 0
               ? 'Sin resultados'
               : filteredProfiles.length === 1
-              ? '1 developer'
-              : `${filteredProfiles.length} developers`}
+                ? '1 developer'
+                : `${filteredProfiles.length} developers`}
           </span>
           {hasActiveFilters && (
             <span className="ml-1 text-slate-400">

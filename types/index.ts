@@ -8,6 +8,8 @@ export type TechCategory =
   | 'Frontend'
   | 'Backend'
   | 'Mobile'
+  | 'Design'
+  | 'Design System'
   | 'DevOps'
   | 'Data'
   | 'Gaming'

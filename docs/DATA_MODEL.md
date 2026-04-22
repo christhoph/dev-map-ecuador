@@ -40,7 +40,7 @@ Catálogo de tecnologías disponibles. Precargado con las más comunes.
 CREATE TABLE technologies (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT UNIQUE NOT NULL,    -- Ej: 'React', 'Python', 'PostgreSQL'
-  category TEXT NOT NULL,       -- 'Frontend' | 'Backend' | 'Mobile' | 'DevOps' | 'Data' | 'Gaming' | 'Testing' | 'Other'
+  category TEXT NOT NULL,       -- 'Frontend' | 'Backend' | 'Mobile' | 'Design' | 'Design System' | 'DevOps' | 'Data' | 'Gaming' | 'Testing' | 'Other'
   created_at TIMESTAMPTZ DEFAULT now()
 );
 ```
@@ -109,6 +109,21 @@ INSERT INTO technologies (name, category) VALUES
 -- Gestión de QA
 ('TestRail', 'Testing'), ('Zephyr', 'Testing'),
 ('Xray', 'Testing');
+
+-- Design / UX
+INSERT INTO technologies (name, category) VALUES
+('Figma', 'Design'), ('Sketch', 'Design'),
+('Adobe XD', 'Design'), ('Framer', 'Design'),
+('Canva', 'Design'), ('Illustrator', 'Design'),
+('Photoshop', 'Design'), ('Principle', 'Design'),
+('Zeplin', 'Design'), ('InVision', 'Design');
+
+-- Design System
+INSERT INTO technologies (name, category) VALUES
+('Storybook', 'Design System'), ('Atomic Design', 'Design System'),
+('Design Tokens', 'Design System'), ('Chromatic', 'Design System'),
+('Bit', 'Design System'), ('Style Dictionary', 'Design System'),
+('Theo', 'Design System');
 ```
 
 ---
