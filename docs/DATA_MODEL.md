@@ -40,7 +40,7 @@ Catálogo de tecnologías disponibles. Precargado con las más comunes.
 CREATE TABLE technologies (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT UNIQUE NOT NULL,    -- Ej: 'React', 'Python', 'PostgreSQL'
-  category TEXT NOT NULL,       -- 'Frontend' | 'Backend' | 'Mobile' | 'DevOps' | 'Data' | 'Other'
+  category TEXT NOT NULL,       -- 'Frontend' | 'Backend' | 'Mobile' | 'DevOps' | 'Data' | 'Gaming' | 'Other'
   created_at TIMESTAMPTZ DEFAULT now()
 );
 ```
@@ -76,6 +76,14 @@ INSERT INTO technologies (name, category) VALUES
 INSERT INTO technologies (name, category) VALUES
 ('PostgreSQL', 'Data'), ('MongoDB', 'Data'), ('MySQL', 'Data'),
 ('Firebase', 'Data'), ('Redis', 'Data'), ('Supabase', 'Data');
+
+-- Gaming
+INSERT INTO technologies (name, category) VALUES
+('Unity', 'Gaming'), ('Unreal Engine', 'Gaming'),
+('Godot', 'Gaming'), ('SDL2', 'Gaming'),
+('WebGL', 'Gaming'), ('Three.js', 'Gaming'),
+('Phaser', 'Gaming'), ('Blender', 'Gaming'),
+('C++', 'Gaming'), ('Lua', 'Gaming');
 ```
 
 ---

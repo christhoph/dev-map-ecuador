@@ -10,6 +10,7 @@ export type TechCategory =
   | 'Mobile'
   | 'DevOps'
   | 'Data'
+  | 'Gaming'
   | 'Other'
 
 export interface Technology {

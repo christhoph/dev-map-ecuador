@@ -170,9 +170,9 @@ export function AskChat() {
   const isEmpty = messages.length === 0
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-[calc(100%-5.125rem)] flex-col">
       {/* ── Área de mensajes ──────────────────────────────────────────────── */}
-      <div className="flex-1 overflow-y-auto px-4 py-6">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden px-4 py-6">
         {isEmpty ? (
           /* Estado vacío — sugerencias */
           <div className="flex h-full flex-col items-center justify-center gap-6 text-center">
