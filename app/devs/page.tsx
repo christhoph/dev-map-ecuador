@@ -99,7 +99,7 @@ export default async function DevsPage() {
   }))
 
   return (
-    <main className="container mx-auto max-w-6xl px-4 py-10">
+    <main className="container mx-auto max-w-6xl px-4 py-10 min-h-[calc(100dvh-8rem)] flex flex-col">
       <div className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-indigo-600 to-blue-500 bg-clip-text text-transparent">
           Directorio

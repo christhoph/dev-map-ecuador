@@ -234,6 +234,27 @@ import { DevCard } from '../../components/dev-card'
 
 ---
 
+## Selects de filtro — valor por defecto
+
+El valor por defecto de los selects usados como filtros siempre es `''` (string vacío), que representa "sin filtro / mostrar todos". **Nunca usar keys internos como `'__all__'` o `'all'`** como valor por defecto:
+
+```typescript
+// ✅ Correcto
+const [selectedCity, setSelectedCity] = useState('')
+if (selectedCity) { /* aplicar filtro */ }
+
+// ❌ Incorrecto
+const ALL_CITIES_VALUE = '__all__'
+const [selectedCity, setSelectedCity] = useState(ALL_CITIES_VALUE)
+```
+
+El SelectItem correspondiente al "todos/ningún filtro" también usa `value=""`:
+```tsx
+<SelectItem value="">Todas las ciudades</SelectItem>
+```
+
+---
+
 ## Convención de rutas
 
 Todas las rutas de la aplicación deben estar en **inglés**. El español queda exclusivamente para la UI (labels, textos, mensajes).

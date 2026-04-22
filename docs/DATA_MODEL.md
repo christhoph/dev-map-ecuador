@@ -240,3 +240,24 @@ SELECT availability, COUNT(*) as total
 FROM profiles WHERE is_public = true
 GROUP BY availability;
 ```
+
+### Filtrar por rol / categoría (directorio)
+
+El filtro por categoría **no requiere campo adicional en `profiles`**. Se resuelve via JOIN en `profile_technologies`:
+
+```sql
+-- Devs con al menos una tecnología de categoría 'Frontend'
+SELECT DISTINCT p.*
+FROM profiles p
+JOIN profile_technologies pt ON p.id = pt.profile_id
+JOIN technologies t ON pt.technology_id = t.id
+WHERE p.is_public = true
+  AND t.category = 'Frontend';
+```
+
+En el cliente (Supabase JS), esto se implementa filtrando directamente sobre los datos ya cargados:
+```typescript
+profile.technologies.some((t) => t.category === selectedCategory)
+```
+
+Categorías disponibles: `'Frontend' | 'Backend' | 'Mobile' | 'DevOps' | 'Data' | 'Testing' | 'Gaming' | 'Other'`

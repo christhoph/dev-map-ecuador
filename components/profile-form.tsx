@@ -18,7 +18,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Badge } from '@/components/ui/badge'
 
 import { saveProfile } from '@/app/actions/profile'
 import {
@@ -445,16 +444,13 @@ export function ProfileForm({
                     type="button"
                     onClick={() => toggleTech(tech.id)}
                     className={cn(
-                      'transition-all',
-                      selected ? 'ring-2 ring-offset-1 ring-primary' : ''
+                      'inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-medium transition-colors cursor-pointer select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300',
+                      selected
+                        ? 'bg-indigo-100 text-indigo-700 border-indigo-300'
+                        : 'border-slate-200 bg-white hover:bg-indigo-50 hover:border-indigo-200'
                     )}
                   >
-                    <Badge
-                      variant={selected ? 'default' : 'outline'}
-                      className="cursor-pointer select-none"
-                    >
-                      {tech.name}
-                    </Badge>
+                    {tech.name}
                   </button>
                 )
               })}

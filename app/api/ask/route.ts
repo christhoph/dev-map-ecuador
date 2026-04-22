@@ -107,6 +107,7 @@ ${devDetails}`
 // ─── POST /api/ask ─────────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
+  try {
   // Verificar autenticación
   const { userId } = await auth()
   if (!userId) {
@@ -137,6 +138,8 @@ Si algo no está en los datos, dilo honestamente. No inventes información sobre
 No revelar emails ni información privada.
 Cuando menciones a un desarrollador, puedes incluir su @username para que el usuario pueda visitar su perfil en /devs/username.
 
+Si la pregunta del usuario no está relacionada con desarrollo de software, tecnología, el ecosistema tech ecuatoriano o los datos del directorio DevMap Ecuador, declina amablemente y redirige al usuario a preguntar sobre el directorio. Responde: "Solo puedo ayudarte con preguntas sobre el ecosistema tech ecuatoriano y los desarrolladores registrados en DevMap Ecuador. ¿Tienes alguna pregunta sobre el directorio?"
+
 DATOS ACTUALES DEL DIRECTORIO:
 ${context}`
 
@@ -158,12 +161,7 @@ ${context}`
         controller.close()
       } catch (err) {
         console.error('[/api/ask] Gemini error:', err)
-        controller.enqueue(
-          new TextEncoder().encode(
-            'Lo siento, ocurrió un error al procesar tu pregunta. Por favor intenta de nuevo.'
-          )
-        )
-        controller.close()
+        controller.error(err)
       }
     },
   })
@@ -175,4 +173,11 @@ ${context}`
       'Cache-Control': 'no-cache',
     },
   })
+  } catch (err) {
+    console.error('[/api/ask] Unexpected error:', err)
+    return Response.json(
+      { error: 'No se pudo procesar tu pregunta en este momento.' },
+      { status: 500 }
+    )
+  }
 }

@@ -14,6 +14,7 @@ interface Message {
   id: string
   role: Role
   content: string
+  error?: boolean
 }
 
 // ─── Constantes ───────────────────────────────────────────────────────────────
@@ -29,6 +30,7 @@ const SUGGESTED_QUESTIONS = [
 
 function MessageBubble({ message }: { message: Message }) {
   const isUser = message.role === 'user'
+  const isError = message.error === true
   return (
     <div
       className={cn(
@@ -51,9 +53,11 @@ function MessageBubble({ message }: { message: Message }) {
       {/* Burbuja */}
       <div
         className={cn(
-          'max-w-[80%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed',
+          'max-w-[80%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap',
           isUser
             ? 'rounded-tr-sm bg-indigo-600 text-white'
+            : isError
+            ? 'rounded-tl-sm bg-red-50 text-red-700 border border-red-200'
             : 'rounded-tl-sm bg-slate-100 text-slate-800'
         )}
       >
@@ -108,7 +112,6 @@ export function AskChat() {
     setInput('')
     setIsLoading(true)
 
-    // Placeholder para la respuesta del asistente
     const assistantId = crypto.randomUUID()
 
     try {
@@ -118,14 +121,18 @@ export function AskChat() {
         body: JSON.stringify({ question: question.trim() }),
       })
 
-      if (!res.ok || !res.body) {
-        throw new Error(`Error ${res.status}`)
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({})) as { error?: string }
+        throw new Error(data.error || 'Error al conectar con la IA')
+      }
+
+      if (!res.body) {
+        throw new Error('Error al conectar con la IA')
       }
 
       setIsLoading(false)
       setIsStreaming(true)
 
-      // Agregar mensaje vacío del asistente que iremos llenando
       setMessages((prev) => [
         ...prev,
         { id: assistantId, role: 'assistant', content: '' },
@@ -133,27 +140,37 @@ export function AskChat() {
 
       const reader = res.body.getReader()
       const decoder = new TextDecoder()
+      let receivedContent = ''
 
-      while (true) {
-        const { done, value } = await reader.read()
-        if (done) break
-        const chunk = decoder.decode(value, { stream: true })
+      try {
+        while (true) {
+          const { done, value } = await reader.read()
+          if (done) break
+          const chunk = decoder.decode(value, { stream: true })
+          receivedContent += chunk
+          setMessages((prev) =>
+            prev.map((m) =>
+              m.id === assistantId ? { ...m, content: m.content + chunk } : m
+            )
+          )
+        }
+      } catch {
+        const errorSuffix = '\n\n⚠️ La respuesta se cortó inesperadamente. Intenta de nuevo.'
         setMessages((prev) =>
           prev.map((m) =>
-            m.id === assistantId ? { ...m, content: m.content + chunk } : m
+            m.id === assistantId
+              ? { ...m, content: (receivedContent || '') + errorSuffix, error: true }
+              : m
           )
         )
       }
-    } catch {
+    } catch (err) {
       setIsLoading(false)
+      const message =
+        err instanceof Error ? err.message : 'Error al conectar con la IA'
       setMessages((prev) => [
         ...prev,
-        {
-          id: assistantId,
-          role: 'assistant',
-          content:
-            'Lo siento, ocurrió un error al procesar tu pregunta. Por favor intenta de nuevo.',
-        },
+        { id: assistantId, role: 'assistant', content: message, error: true },
       ])
     } finally {
       setIsLoading(false)
