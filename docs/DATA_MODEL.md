@@ -142,6 +142,33 @@ CREATE TABLE projects (
 
 ---
 
+### `feedback`
+Reportes de bugs, mejoras y sugerencias enviados por los usuarios desde `/feedback`. No requiere autenticación.
+
+```sql
+CREATE TABLE feedback (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  type TEXT NOT NULL,
+    -- Valores: 'bug' | 'mejora' | 'feature'
+  title TEXT NOT NULL,                -- Max 100 chars
+  description TEXT NOT NULL,          -- Max 500 chars
+  page TEXT,
+    -- Valores: 'landing' | 'directorio' | 'perfil' | 'ask' | 'registro' | 'otra'
+  contact_email TEXT,                 -- Opcional
+  name TEXT,                          -- Opcional
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- RLS: inserción pública, lectura solo con service role
+ALTER TABLE feedback ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Cualquiera puede enviar feedback"
+  ON feedback FOR INSERT
+  TO public WITH CHECK (true);
+```
+
+---
+
 ## Row Level Security (RLS)
 
 Habilitar RLS en todas las tablas para que los usuarios solo puedan editar su propio perfil.

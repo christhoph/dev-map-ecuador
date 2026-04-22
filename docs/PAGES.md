@@ -182,6 +182,35 @@ DATOS ACTUALES DEL ECOSISTEMA:
 
 ---
 
+## `/feedback` — Formulario de feedback
+
+**Objetivo:** Canal directo para reportar bugs, sugerir mejoras o proponer features. No requiere autenticación.
+
+**Tipo de render:** Server Component con Client Component interno (`FeedbackForm`)
+
+**Acceso:** Público, sin autenticación requerida
+
+**Secciones:**
+
+1. **GitHub** (tono técnico)
+   - Descripción del proyecto open source
+   - Botón "Reportar issue" → `https://github.com/christhoph/dev-map-ecuador/issues/new`
+   - Botón "Ver repositorio" → `https://github.com/christhoph/dev-map-ecuador`
+   - Separador visual "o si prefieres" hacia el formulario
+
+2. **Formulario** (`FeedbackForm`)
+   - Tipo: bug / mejora / feature (requerido)
+   - Título: texto corto (requerido, min 3 / max 100 chars)
+   - Descripción: textarea con contador de caracteres (requerido, min 10 / max 500)
+   - Página donde ocurrió: opcional (landing, directorio, perfil, ask, registro, otra)
+   - Nombre: opcional (max 80 chars)
+   - Email de contacto: opcional (validado como email válido)
+   - Estado de éxito inline: reemplaza el formulario, no usa toast
+
+**API:** `POST /api/feedback` — valida con zod, inserta en tabla `feedback` de Supabase con service role key
+
+---
+
 ## `/sign-in` y `/sign-up` — Autenticación
 
 Manejadas completamente por Clerk. Páginas mínimas que renderizan los componentes de Clerk (`<SignIn />` y `<SignUp />`).

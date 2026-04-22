@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Bot, MapPin, Users, Zap, TrendingUp, ArrowRight } from 'lucide-react'
+import { Bot, MapPin, Users, Zap, TrendingUp, ArrowRight, Bug, Link2 } from 'lucide-react'
 
 import { DevCard } from '@/components/dev-card'
 import { buttonVariants } from '@/components/ui/button'
@@ -304,6 +304,19 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ── Feedback nudge ───────────────────────────────────────────────── */}
+      <div className="border-b py-6 text-center">
+        <p className="text-sm text-slate-500">
+          ¿Encontraste algo? →{' '}
+          <Link
+            href="/feedback"
+            className="text-slate-500 underline-offset-4 hover:text-indigo-600 hover:underline"
+          >
+            Déjanos tu feedback
+          </Link>
+        </p>
+      </div>
 
       {/* ── CTA final ────────────────────────────────────────────────────── */}
       <section className="bg-indigo-600 py-20">

@@ -363,6 +363,16 @@ Resumen ejecutivo de los hallazgos más importantes. Leer antes de retomar el pr
 
 ---
 
+## Post-evento — Features adicionales
+
+- [x] Página /feedback con formulario y tabla en Supabase
+- [ ] Importación desde GitHub API
+- [ ] Sección de experiencia laboral en perfil
+- [ ] Modo oscuro
+- [ ] Tests unitarios
+
+---
+
 ## ✅ MVP Completado — 22 abril 2026
 
 Todos los pasos finalizados. Variables de entorno configuradas en local y Vercel.
