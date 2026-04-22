@@ -216,13 +216,13 @@ export default async function HomePage() {
       </section>
 
       {/* ── Últimos perfiles ──────────────────────────────────────────────── */}
-      {recentProfiles.length > 0 && (
-        <section className="border-b py-14">
-          <div className="container mx-auto max-w-6xl px-4">
-            <div className="mb-6 flex items-center justify-between">
-              <h2 className="text-2xl font-bold tracking-tight">
-                Últimos perfiles
-              </h2>
+      <section className="border-b py-14">
+        <div className="container mx-auto max-w-6xl px-4">
+          <div className="mb-6 flex items-center justify-between">
+            <h2 className="text-2xl font-bold tracking-tight">
+              Últimos perfiles
+            </h2>
+            {recentProfiles.length > 0 && (
               <Link
                 href="/devs"
                 className={cn(
@@ -233,16 +233,31 @@ export default async function HomePage() {
                 Ver todos
                 <ArrowRight className="h-3.5 w-3.5" />
               </Link>
-            </div>
+            )}
+          </div>
 
+          {recentProfiles.length > 0 ? (
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {recentProfiles.map((profile) => (
                 <DevCard key={profile.id} profile={profile} />
               ))}
             </div>
-          </div>
-        </section>
-      )}
+          ) : (
+            <div className="flex flex-col items-center justify-center rounded-xl border border-dashed py-16 text-center">
+              <p className="text-base font-medium">El directorio está listo para crecer</p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Sé el primero en registrar tu perfil y aparecer aquí.
+              </p>
+              <Link
+                href="/register"
+                className={cn(buttonVariants({ size: 'sm' }), 'mt-5')}
+              >
+                Crear mi perfil
+              </Link>
+            </div>
+          )}
+        </div>
+      </section>
 
       {/* ── Ask AI Preview ────────────────────────────────────────────────── */}
       <section className="border-b py-14">

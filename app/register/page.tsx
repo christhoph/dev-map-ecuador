@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { auth, currentUser } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 
@@ -6,6 +7,11 @@ import { createServiceRoleClient } from '@/lib/supabase/server'
 import { MAX_USERNAME_LENGTH } from '@/lib/constants'
 import type { Technology, TechCategory, Availability } from '@/types'
 import type { InitialProfile } from '@/components/profile-form'
+
+export const metadata: Metadata = {
+  title: 'Mi perfil — DevMap Ecuador',
+  description: 'Crea o edita tu perfil en DevMap Ecuador. Forma parte del directorio del talento tech ecuatoriano.',
+}
 
 export default async function RegistroPage() {
   const { userId } = await auth()

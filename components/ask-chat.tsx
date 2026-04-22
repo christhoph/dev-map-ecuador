@@ -19,10 +19,10 @@ interface Message {
 // ─── Constantes ───────────────────────────────────────────────────────────────
 
 const SUGGESTED_QUESTIONS = [
-  '¿Cuántos devs hay registrados?',
-  '¿Cuáles son las tecnologías más usadas?',
-  '¿Cuántos devs están buscando empleo en Quito?',
-  '¿Qué devs tienen experiencia en React Native?',
+  '¿Cuántos desarrolladores hay registrados y de qué ciudades son?',
+  '¿Cuál es la tecnología más usada en el ecosistema tech ecuatoriano?',
+  '¿Hay devs disponibles para freelance en Quito con experiencia en React?',
+  '¿Qué ciudades tienen más talento tech en Ecuador?',
 ]
 
 // ─── Componentes auxiliares ───────────────────────────────────────────────────

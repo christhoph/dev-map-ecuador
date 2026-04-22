@@ -244,9 +244,9 @@ Los pasos son secuenciales pero no están atados a días. Puedes completar vario
 | 10 | Integración Gemini API | ✅ |
 | 11 | Chat UI `/ask` | ✅ |
 | 12 | Ecosystem Stats y Landing | ✅ |
-| 13 | Revisión visual y responsive | ⬜ |
-| 14 | Beta con conocidos | ⬜ |
-| 15 | Preparar demo | ⬜ |
+| 13 | Revisión visual y responsive | ✅ |
+| 14 | Beta con conocidos | ✅ |
+| 15 | Preparar demo | ✅ |
 
 ---
 
@@ -354,3 +354,10 @@ Resumen ejecutivo de los hallazgos más importantes. Leer antes de retomar el pr
 ### Bloque 4
 - **Streaming con `ReadableStream` nativo** — El endpoint `/api/ask` usa `ReadableStream` de la Web API. El cliente lee con `res.body.getReader()` + `TextDecoder` en un loop hasta `done === true`.
 - **`/api/ask` protegido con `auth()` de Clerk** — La ruta valida `userId` al inicio y retorna 401 si no hay sesión. Registrar la ruta en `proxy.ts` para protección adicional a nivel de middleware.
+
+### Bloque 5
+- **Nav mobile: `usePathname` para active link** — Al agregar el hamburger menu se usó `usePathname()` para marcar visualmente el link activo con `bg-accent`. Requiere `'use client'` en el componente.
+- **`min-h-screen` en auth pages rompe el layout con Nav** — Las páginas de Clerk (`/sign-in`, `/sign-up`) usaban `min-h-screen` causando doble altura total. Fix: `flex flex-1 items-center justify-center py-12`. Funciona porque el `body` del layout es `flex flex-col`.
+- **Custom `app/not-found.tsx` reemplaza el 404 de Next.js** — Colocar el archivo en la raíz de `app/` captura todos los 404, incluyendo los de `notFound()` en Server Components. Usar `flex-1` para centrar verticalmente sin `min-h-screen`.
+- **Empty state en landing cuando no hay perfiles** — La sección "Últimos perfiles" siempre se renderiza; si `recentProfiles.length === 0` se muestra un estado vacío con CTA a `/register` en lugar de ocultar la sección completa.
+- **`UserButton` en mobile nav causa hidratación doble** — Para evitarlo, el `UserButton` de Clerk se muestra en ambos contextos (mobile header + mobile dropdown) solo en el header cuando `isSignedIn`, nunca duplicado en el dropdown.
