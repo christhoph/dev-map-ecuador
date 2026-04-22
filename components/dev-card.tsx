@@ -22,7 +22,7 @@ export function DevCard({ profile }: DevCardProps) {
   return (
     <Link
       href={`/devs/${profile.username}`}
-      className="group block h-full"
+      className="group block h-full cursor-pointer"
       aria-label={`Ver perfil de ${profile.full_name}`}
     >
       <article className={cn(

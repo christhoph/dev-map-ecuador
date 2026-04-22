@@ -137,7 +137,7 @@ export function FeedbackForm() {
               <SelectTrigger className={errors.type ? 'border-destructive' : ''}>
                 <SelectValue placeholder="Selecciona un tipo" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="w-full">
                 <SelectItem value="bug">Bug encontrado</SelectItem>
                 <SelectItem value="mejora">Mejora al diseño o UX</SelectItem>
                 <SelectItem value="feature">Sugerencia de nueva feature</SelectItem>
@@ -201,7 +201,7 @@ export function FeedbackForm() {
               <SelectTrigger>
                 <SelectValue placeholder="Selecciona una página (opcional)" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="w-full">
                 <SelectItem value="landing">Landing (inicio)</SelectItem>
                 <SelectItem value="directorio">Directorio de devs</SelectItem>
                 <SelectItem value="perfil">Perfil público</SelectItem>
@@ -242,7 +242,7 @@ export function FeedbackForm() {
       </div>
 
       {/* Submit */}
-      <div className="pt-2 w-full flex justify-end">
+      <div className="pt-2">
         <Button
           type="submit"
           disabled={isSubmitting}

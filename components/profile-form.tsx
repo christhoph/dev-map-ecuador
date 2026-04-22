@@ -271,7 +271,7 @@ export function ProfileForm({
                 <SelectTrigger className={errors.city ? 'border-destructive' : ''}>
                   <SelectValue placeholder="Selecciona tu ciudad" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="w-full">
                   {CITIES_ECUADOR.map((city) => (
                     <SelectItem key={city} value={city}>
                       {city}
@@ -299,7 +299,7 @@ export function ProfileForm({
                 <SelectTrigger className={errors.availability ? 'border-destructive' : ''}>
                   <SelectValue placeholder="Selecciona tu disponibilidad" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="w-full">
                   {(Object.entries(AVAILABILITY_LABELS) as [Availability, string][]).map(
                     ([value, label]) => (
                       <SelectItem key={value} value={value}>
@@ -543,7 +543,7 @@ export function ProfileForm({
       </section>
 
       {/* ── Submit ─────────────────────────────────────────────────────────── */}
-      <div className="pt-2 w-full flex justify-end">
+      <div className="pt-2">
         <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
           {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {isSubmitting ? 'Guardando...' : initialProfile ? 'Guardar cambios' : 'Crear perfil'}

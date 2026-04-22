@@ -74,7 +74,7 @@ export function MultiSelect({
         type="button"
         onClick={() => setOpen(!open)}
         className={cn(
-          'flex min-h-8 w-full items-center justify-between gap-1.5 rounded-lg border border-input bg-white py-1.5 pr-2 pl-2.5 text-sm whitespace-nowrap transition-colors outline-none select-none',
+          'flex min-h-8 w-full cursor-pointer items-center justify-between gap-1.5 rounded-lg border border-input bg-white py-1.5 pr-2 pl-2.5 text-sm whitespace-nowrap transition-colors outline-none select-none',
           'focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
           open && 'border-ring ring-3 ring-ring/50'
         )}
@@ -93,7 +93,7 @@ export function MultiSelect({
                   <button
                     type="button"
                     onClick={(e) => remove(opt.value, e)}
-                    className="text-indigo-400 hover:text-indigo-700 transition-colors"
+                    className="cursor-pointer text-indigo-400 hover:text-indigo-700 transition-colors"
                   >
                     <X className="h-3 w-3" />
                   </button>
@@ -144,7 +144,7 @@ export function MultiSelect({
                     type="button"
                     onClick={() => toggle(opt.value)}
                     className={cn(
-                      'flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-sm outline-hidden transition-colors hover:bg-accent hover:text-accent-foreground',
+                      'flex w-full cursor-pointer items-center gap-2 rounded-md px-3 py-1.5 text-sm outline-hidden transition-colors hover:bg-accent hover:text-accent-foreground',
                       isSelected && 'text-indigo-700'
                     )}
                   >

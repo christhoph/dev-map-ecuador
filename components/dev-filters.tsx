@@ -104,7 +104,7 @@ export function DevFilters({ initialProfiles, technologies }: DevFiltersProps) {
             <button
               type="button"
               onClick={clearFilters}
-              className="flex items-center gap-1 text-xs text-indigo-600 hover:text-indigo-700 transition-colors"
+              className="flex cursor-pointer items-center gap-1 text-xs text-indigo-600 hover:text-indigo-700 transition-colors"
             >
               <X className="h-3.5 w-3.5" />
               Limpiar filtros
@@ -125,7 +125,7 @@ export function DevFilters({ initialProfiles, technologies }: DevFiltersProps) {
               <SelectTrigger className="w-full bg-white">
                 <SelectValue placeholder="Todas las ciudades" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="w-full">
                 <SelectItem value="">Todas las ciudades</SelectItem>
                 {CITIES_ECUADOR.map((city) => (
                   <SelectItem key={city} value={city}>
@@ -146,7 +146,7 @@ export function DevFilters({ initialProfiles, technologies }: DevFiltersProps) {
               <SelectTrigger className="w-full bg-white">
                 <SelectValue placeholder="Todas" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="w-full">
                 <SelectItem value="">Todas</SelectItem>
                 {AVAILABILITY_OPTIONS.map(({ value, label }) => (
                   <SelectItem key={value} value={value}>
@@ -167,7 +167,7 @@ export function DevFilters({ initialProfiles, technologies }: DevFiltersProps) {
               <SelectTrigger className="w-full bg-white">
                 <SelectValue placeholder="Todos los roles" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="w-full">
                 <SelectItem value="">Todos los roles</SelectItem>
                 {TECH_CATEGORIES.map((cat) => (
                   <SelectItem key={cat} value={cat}>
