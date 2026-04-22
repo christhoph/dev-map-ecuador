@@ -44,6 +44,20 @@ export interface DevProfile {
   created_at: string
 }
 
+// Versión reducida de DevProfile usada en el directorio (/devs)
+// No incluye email, projects ni is_public — solo lo que DevCard necesita
+export interface DevCardProfile {
+  id: string
+  username: string
+  full_name: string
+  avatar_url?: string
+  city: string
+  years_experience?: number
+  availability: Availability
+  technologies: Technology[]
+  created_at: string
+}
+
 export interface EcosystemStats {
   total_devs: number
   total_cities: number

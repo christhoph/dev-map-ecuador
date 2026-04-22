@@ -8,23 +8,23 @@ Los pasos son secuenciales pero no están atados a días. Puedes completar vario
 ## 🏗️ BLOQUE 1 — Setup y base del proyecto
 
 ### Paso 1 — Inicializar el proyecto
-- [ ] Crear repo en GitHub: `devmap-ecuador`
-- [ ] Inicializar Next.js con TypeScript y Tailwind:
+- [x] Crear repo en GitHub: `devmap-ecuador`
+- [x] Inicializar Next.js con TypeScript y Tailwind:
   ```bash
-  npx create-next-app@latest devmap-ecuador --typescript --tailwind --app
+  npx create-next-app@latest . --typescript --tailwind --app --no-src-dir --import-alias "@/*" --eslint --yes
   ```
-- [ ] Instalar dependencias base:
+- [x] Instalar dependencias base:
   ```bash
-  npm install @clerk/nextjs @supabase/supabase-js @google/generative-ai
+  npm install @clerk/nextjs @supabase/supabase-js @supabase/ssr @google/generative-ai
   npm install react-hook-form zod @hookform/resolvers
   npm install lucide-react class-variance-authority clsx tailwind-merge
-  npx shadcn@latest init
-  npx shadcn@latest add button input textarea select badge card avatar toast
+  npx shadcn@latest init --yes --defaults
+  npx shadcn@latest add input textarea select badge card avatar sonner --yes
   ```
-- [ ] Agregar carpeta `/docs` con todos los `.md` al repo
-- [ ] Crear `.env.local` y `.env.example` con las variables del `STACK.md`
+- [x] Agregar carpeta `/docs` con todos los `.md` al repo
+- [x] Crear `.env.local` y `.env.example` con las variables del `STACK.md`
 
-**✅ Entregable:** `npm run dev` corre sin errores
+**✅ Entregable:** `npm run build` corre sin errores
 
 ---
 
@@ -32,7 +32,7 @@ Los pasos son secuenciales pero no están atados a días. Puedes completar vario
 - [ ] Crear proyecto en Supabase
 - [ ] Ejecutar el SQL completo de `DATA_MODEL.md` (tablas, RLS, seed de `technologies`)
 - [ ] Copiar `SUPABASE_URL`, `SUPABASE_ANON_KEY` y `SERVICE_ROLE_KEY` al `.env.local`
-- [ ] Crear `lib/supabase/client.ts` y `lib/supabase/server.ts`
+- [x] Crear `lib/supabase/client.ts` y `lib/supabase/server.ts`
 - [ ] Verificar conexión consultando la tabla `technologies` desde el código
 
 **✅ Entregable:** Query a Supabase retorna las tecnologías del seed sin errores
@@ -42,8 +42,8 @@ Los pasos son secuenciales pero no están atados a días. Puedes completar vario
 ### Paso 3 — Configurar Clerk
 - [ ] Crear aplicación en Clerk (clerk.com)
 - [ ] Copiar `PUBLISHABLE_KEY` y `SECRET_KEY` al `.env.local`
-- [ ] Crear `middleware.ts` protegiendo `/registro` y `/api/ask`
-- [ ] Crear páginas `/sign-in` y `/sign-up` con componentes de Clerk
+- [x] Crear `proxy.ts` protegiendo `/register` y `/api/ask` (⚠️ ver Notas)
+- [x] Crear páginas `/sign-in` y `/sign-up` con componentes de Clerk
 - [ ] Verificar que rutas protegidas redirigen al login
 
 **✅ Entregable:** Flujo de sign up/sign in funciona end to end
@@ -62,33 +62,33 @@ Los pasos son secuenciales pero no están atados a días. Puedes completar vario
 ## 👤 BLOQUE 2 — Perfil y registro
 
 ### Paso 5 — Tipos, constantes y estructura base
-- [ ] Crear `types/index.ts` con todos los tipos del `CONVENTIONS.md`
-- [ ] Crear `lib/constants.ts` con `CITIES_ECUADOR`, `AVAILABILITY_LABELS`, `AVAILABILITY_COLORS` y demás constantes
-- [ ] Crear `lib/utils.ts` con helpers básicos (cn, formatAvailability, getInitials)
+- [x] Crear `types/index.ts` con todos los tipos del `CONVENTIONS.md`
+- [x] Crear `lib/constants.ts` con `CITIES_ECUADOR`, `AVAILABILITY_LABELS`, `AVAILABILITY_COLORS` y demás constantes
+- [x] Crear `lib/utils.ts` con helpers básicos (cn, formatAvailability, getInitials)
 
 **✅ Entregable:** Tipos y constantes disponibles sin errores de TypeScript
 
 ---
 
-### Paso 6 — Formulario de registro (`/registro`)
-- [ ] Construir `ProfileForm` con react-hook-form + zod
-- [ ] Incluir todos los campos definidos en `PAGES.md`
-- [ ] Multi-select de tecnologías cargado desde Supabase
-- [ ] Sección de proyectos dinámica (agregar/eliminar, máx 3)
-- [ ] Lógica de upsert: guardar en `profiles`, `profile_technologies` y `projects`
-- [ ] Validación de username único contra Supabase
-- [ ] Redirect a `/devs/[username]` con toast de éxito al guardar
+### Paso 6 — Formulario de registro (`/register`)
+- [x] Construir `ProfileForm` con react-hook-form + zod
+- [x] Incluir todos los campos definidos en `PAGES.md`
+- [x] Multi-select de tecnologías cargado desde Supabase
+- [x] Sección de proyectos dinámica (agregar/eliminar, máx 3)
+- [x] Lógica de upsert: guardar en `profiles`, `profile_technologies` y `projects`
+- [x] Validación de username único contra Supabase
+- [x] Redirect a `/devs/[username]` con toast de éxito al guardar
 
 **✅ Entregable:** Puedes crear tu propio perfil como primer usuario beta
 
 ---
 
 ### Paso 7 — Perfil público (`/devs/[username]`)
-- [ ] Construir página con SSR (`generateMetadata` para SEO y Open Graph)
-- [ ] Todas las secciones definidas en `PAGES.md`: header, bio, stack, proyectos
-- [ ] Manejo de 404 si el username no existe
-- [ ] Botón "Editar perfil" visible solo para el dueño del perfil
-- [ ] Avatar con fallback de iniciales si no hay foto
+- [x] Construir página con SSR (`generateMetadata` para SEO y Open Graph)
+- [x] Todas las secciones definidas en `PAGES.md`: header, bio, stack, proyectos
+- [x] Manejo de 404 si el username no existe
+- [x] Botón "Editar perfil" visible solo para el dueño del perfil
+- [x] Avatar con fallback de iniciales si no hay foto
 
 **✅ Entregable:** Perfil público accesible en `/devs/tu-username`
 
@@ -97,22 +97,22 @@ Los pasos son secuenciales pero no están atados a días. Puedes completar vario
 ## 🗂️ BLOQUE 3 — Directorio
 
 ### Paso 8 — DevCard component
-- [ ] Construir `dev-card.tsx` con toda la info definida en `PAGES.md`
-- [ ] Badge de disponibilidad con colores de `AVAILABILITY_COLORS`
-- [ ] Primeras 4-5 tecnologías como badges
-- [ ] Clickeable → navega a `/devs/[username]`
+- [x] Construir `dev-card.tsx` con toda la info definida en `PAGES.md`
+- [x] Badge de disponibilidad con colores de `AVAILABILITY_COLORS`
+- [x] Primeras 4-5 tecnologías como badges
+- [x] Clickeable → navega a `/devs/[username]`
 
-**✅ Entregable:** DevCard renderiza correctamente con datos mock
+**✅ Entregable:** DevCard renderiza correctamente con datos reales
 
 ---
 
 ### Paso 9 — Directorio con filtros (`/devs`)
-- [ ] Construir `dev-filters.tsx` (ciudad, tecnología, disponibilidad)
-- [ ] Página `/devs` con datos iniciales desde servidor (SSR)
-- [ ] Filtrado en cliente sin recargar página
-- [ ] Estado vacío con mensaje amigable
-- [ ] Diseño responsive mobile-first
-- [ ] Grid de DevCards
+- [x] Construir `dev-filters.tsx` (ciudad, tecnología, disponibilidad)
+- [x] Página `/devs` con datos iniciales desde servidor (SSR)
+- [x] Filtrado en cliente sin recargar página
+- [x] Estado vacío con mensaje amigable
+- [x] Diseño responsive mobile-first
+- [x] Grid de DevCards
 
 **✅ Entregable:** `/devs` muestra perfiles reales con filtros funcionando
 
@@ -232,18 +232,125 @@ Los pasos son secuenciales pero no están atados a días. Puedes completar vario
 
 | Paso | Descripción | Estado |
 |---|---|---|
-| 1 | Inicializar proyecto | ⬜ |
-| 2 | Configurar Supabase | ⬜ |
-| 3 | Configurar Clerk | ⬜ |
-| 4 | Deploy inicial Vercel | ⬜ |
-| 5 | Tipos y constantes | ⬜ |
-| 6 | Formulario de registro | ⬜ |
-| 7 | Perfil público | ⬜ |
-| 8 | DevCard component | ⬜ |
-| 9 | Directorio con filtros | ⬜ |
-| 10 | Integración Gemini API | ⬜ |
-| 11 | Chat UI `/ask` | ⬜ |
-| 12 | Ecosystem Stats y Landing | ⬜ |
+| 1 | Inicializar proyecto | ✅ |
+| 2 | Configurar Supabase | ✅ |
+| 3 | Configurar Clerk | ✅ |
+| 4 | Deploy inicial Vercel | ✅ |
+| 5 | Tipos y constantes | ✅ |
+| 6 | Formulario de registro | ✅ |
+| 7 | Perfil público | ✅ |
+| 8 | DevCard component | ✅ |
+| 9 | Directorio con filtros | ✅ |
+| 10 | Integración Gemini API | ✅ |
+| 11 | Chat UI `/ask` | ✅ |
+| 12 | Ecosystem Stats y Landing | ✅ |
 | 13 | Revisión visual y responsive | ⬜ |
 | 14 | Beta con conocidos | ⬜ |
 | 15 | Preparar demo | ⬜ |
+
+---
+
+## Notas por bloque
+
+Observaciones técnicas encontradas durante el desarrollo. Leer antes de continuar con el siguiente bloque.
+
+### BLOQUE 1
+
+**`proxy.ts` en lugar de `middleware.ts`**
+Next.js 16 deprecó la convención `middleware.ts`. El archivo de middleware de Clerk debe llamarse `proxy.ts` en la raíz del proyecto. El build muestra un warning si se usa el nombre antiguo.
+
+**`sonner` en lugar de `toast` de shadcn**
+El componente `toast` de shadcn está deprecado. La CLI de shadcn rechaza su instalación con un error explícito. Usar siempre:
+- En `layout.tsx`: `import { Toaster } from '@/components/ui/sonner'`
+- En componentes: `import { toast } from 'sonner'`
+
+**shadcn init con `--defaults`**
+Para evitar el prompt interactivo de shadcn en CI/CD o scripts, usar:
+```bash
+echo "" | npx shadcn@latest init --yes --defaults
+```
+
+### BLOQUE 2
+
+**`Button asChild` no funciona en este proyecto**
+shadcn v4 usa Base UI (`@base-ui/react/button`) en lugar de Radix UI. Base UI no soporta la prop `asChild`. Para botones que envuelven links usar siempre:
+```tsx
+import { buttonVariants } from '@/components/ui/button'
+<Link href="..." className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}>
+  Texto
+</Link>
+```
+
+**`lucide-react` no tiene iconos de marcas (`Github`, `Linkedin`)**
+En la versión instalada, los iconos de marca no existen. Reemplazos:
+- GitHub → `Link2`
+- LinkedIn → `Link2`
+- Portfolio/Web → `Globe`
+
+**Zod `.default('')` + `zodResolver` generan conflicto de tipos**
+`.default('')` cambia el tipo de output de un campo (opcional → requerido), lo que provoca un error de TypeScript con el resolver de react-hook-form. Regla: usar siempre solo `.optional()` en el schema y manejar los valores vacíos con `defaultValues` en `useForm`.
+
+**`createServiceRoleClient()` sin el genérico `<Database>`**
+El placeholder de `lib/supabase/types.ts` causa conflictos de tipo cuando se pasa como genérico al cliente de service role. Solución: `createServiceRoleClient()` se crea sin genérico (cliente no tipado). Para castear los datos, usar `as unknown as MiTipo` con interfaces locales explícitas.
+
+**Rutas en inglés**
+Todas las rutas de la app deben estar en inglés: `/register` (no `/registro`), `/sign-in`, `/sign-up`. El español solo para UI (labels, textos, mensajes). Actualizar las variables de Clerk: `NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/register`.
+
+### BLOQUE 3
+
+**`export const dynamic = 'force-dynamic'` en páginas con Supabase sin segmentos dinámicos**
+Next.js intenta pre-renderizar las páginas estáticas (sin `[params]`) en build time. Si la página usa Supabase (que requiere env vars en runtime), el build falla con `"URL and Key are required"`. Solución: agregar `export const dynamic = 'force-dynamic'` en la página.
+
+**Base UI Select `onValueChange` tipado como `(value: string | null) => void`**
+La prop `onValueChange` del Select de Base UI puede pasar `null`. Al usarla con `useState<string>`, añadir fallback:
+```tsx
+onValueChange={(value) => setSelectedState(value ?? DEFAULT_VALUE)}
+```
+
+**`DevCardProfile` como tipo reducido de `DevProfile`**
+Para el directorio no se necesita `email`, `projects` ni `is_public`. Se definió `DevCardProfile` en `types/index.ts` como subconjunto de `DevProfile` para mantener los datos mínimos en la query y en memoria del cliente.
+
+### BLOQUE 4
+
+**`SignedIn` / `SignedOut` no existen en esta versión de `@clerk/nextjs`**
+La versión instalada no exporta `SignedIn` ni `SignedOut`. Reemplazos:
+- En Server Components: usar `auth()` de `@clerk/nextjs/server` para obtener `userId`
+- En Client Components: usar `useAuth()` hook → `const { isSignedIn } = useAuth()`
+- `Nav` debe ser `'use client'` para usar `useAuth` y `UserButton`
+
+**`UserButton` no acepta `afterSignOutUrl`**
+La prop `afterSignOutUrl` no existe en esta versión de `UserButton`. Simplemente omitirla — el comportamiento por defecto es aceptable.
+
+**`Nav` como Client Component en el layout**
+El layout de Next.js es un Server Component, pero incluir un Client Component (`Nav`) es válido. El cliente hidrata la parte del nav mientras el resto del layout sigue siendo server-rendered.
+
+**Streaming con `ReadableStream` nativo**
+El endpoint `/api/ask` usa `ReadableStream` nativo de la Web API (no el SDK de streaming de Vercel). El cliente lee el stream con `res.body.getReader()` + `TextDecoder` en un loop `while (done, value)`.
+
+**`geminiFlash.generateContentStream` con `systemInstruction` como string**
+La API de Google Generative AI acepta `systemInstruction` como string directamente en `generateContentStream`. No necesita estar en el array `contents`.
+
+**`crypto.randomUUID()` disponible en el cliente**
+Para generar IDs de mensajes en el chat, `crypto.randomUUID()` está disponible globalmente en el browser moderno y en Node.js 19+. No se necesita ninguna librería adicional.
+
+---
+
+## Notas técnicas por bloque
+
+Resumen ejecutivo de los hallazgos más importantes. Leer antes de retomar el proyecto.
+
+### Bloque 1
+- **`proxy.ts` en lugar de `middleware.ts`** — Next.js 16 deprecó el nombre `middleware.ts`. El archivo de Clerk debe llamarse `proxy.ts` en la raíz del proyecto.
+- **`sonner` en lugar de shadcn toast** — El componente `toast` de shadcn está deprecado y la CLI rechaza su instalación. Usar `import { Toaster } from '@/components/ui/sonner'` en el layout e `import { toast } from 'sonner'` en los componentes.
+
+### Bloque 2
+- **`Button asChild` no funciona** — shadcn v4 usa Base UI que no soporta `asChild`. Para botones-link usar `<Link href="..." className={cn(buttonVariants({ variant, size }))}>`.
+- **`lucide-react` no tiene iconos de marcas** — `Github` y `Linkedin` no existen. Usar `Link2` para GitHub y LinkedIn, `Globe` para portfolio.
+- **Zod `.default('')` + `zodResolver` generan conflicto de tipos** — `.default('')` cambia el tipo del campo y rompe el resolver. Usar solo `.optional()` en el schema y manejar valores vacíos con `defaultValues` en `useForm`.
+
+### Bloque 3
+- **Rutas estandarizadas en inglés** — `/register` en lugar de `/registro`. Actualizar también `proxy.ts`, `.env.local`, `.env.example` y cualquier `<Link>` que apunte a la ruta antigua.
+
+### Bloque 4
+- **Streaming con `ReadableStream` nativo** — El endpoint `/api/ask` usa `ReadableStream` de la Web API. El cliente lee con `res.body.getReader()` + `TextDecoder` en un loop hasta `done === true`.
+- **`/api/ask` protegido con `auth()` de Clerk** — La ruta valida `userId` al inicio y retorna 401 si no hay sesión. Registrar la ruta en `proxy.ts` para protección adicional a nivel de middleware.

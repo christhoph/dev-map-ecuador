@@ -15,7 +15,7 @@ Cada página describe su objetivo, datos que necesita, componentes principales y
 1. **Hero**
    - Título: "El directorio del talento tech ecuatoriano"
    - Subtítulo breve explicando qué es
-   - Dos CTAs: "Crear mi perfil" → `/registro` y "Explorar devs" → `/devs`
+   - Dos CTAs: "Crear mi perfil" → `/register` y "Explorar devs" → `/devs`
 
 2. **Ecosystem Stats** (datos reales de Supabase)
    - Total de devs registrados
@@ -32,7 +32,7 @@ Cada página describe su objetivo, datos que necesita, componentes principales y
 
 5. **CTA final**
    - "¿Eres dev ecuatoriano? Súmate al mapa"
-   - Botón → `/registro`
+   - Botón → `/register`
 
 ---
 
@@ -94,11 +94,11 @@ Cada página describe su objetivo, datos que necesita, componentes principales y
 
 ---
 
-## `/registro` — Formulario de Perfil
+## `/register` — Formulario de Perfil
 
 **Objetivo:** Crear o editar el perfil del dev autenticado.
 
-**Tipo de render:** Client Component con protección de ruta (Clerk middleware)
+**Tipo de render:** Client Component con protección de ruta (Clerk proxy.ts)
 
 **Acceso:** Solo usuarios autenticados. Si no está logueado, redirige a `/sign-in`
 
@@ -186,16 +186,16 @@ DATOS ACTUALES DEL ECOSISTEMA:
 
 Manejadas completamente por Clerk. Páginas mínimas que renderizan los componentes de Clerk (`<SignIn />` y `<SignUp />`).
 
-Después del login exitoso → redirige a `/registro` para completar perfil.
+Después del login exitoso → redirige a `/register` para completar perfil.
 
 ---
 
 ## Rutas protegidas (middleware.ts)
 
 ```typescript
-// Solo /registro requiere autenticación
+// Solo /register requiere autenticación
 // Todo lo demás es público
 export const config = {
-  matcher: ['/registro', '/api/ask']
+  matcher: ['/register', '/api/ask']
 }
 ```

@@ -1,8 +1,313 @@
-export default function HomePage() {
+import type { Metadata } from 'next'
+import Link from 'next/link'
+import { Bot, MapPin, Users, Zap, TrendingUp, ArrowRight } from 'lucide-react'
+
+import { DevCard } from '@/components/dev-card'
+import { buttonVariants } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { createServiceRoleClient } from '@/lib/supabase/server'
+import { cn } from '@/lib/utils'
+import type { DevCardProfile, Availability, TechCategory } from '@/types'
+
+// La landing usa Supabase en runtime
+export const dynamic = 'force-dynamic'
+
+export const metadata: Metadata = {
+  title: 'DevMap Ecuador — Directorio del talento tech ecuatoriano',
+  description:
+    'Descubre desarrolladores ecuatorianos, explora su stack tecnológico y conecta con el ecosistema tech del Ecuador.',
+}
+
+// ─── Tipos para datos crudos de Supabase ──────────────────────────────────────
+
+interface RawProfileRow {
+  id: string
+  username: string
+  full_name: string
+  avatar_url: string | null
+  city: string
+  years_experience: number | null
+  availability: string
+  created_at: string
+  profile_technologies: {
+    technologies: {
+      id: string
+      name: string
+      category: string
+    } | null
+  }[]
+}
+
+interface RawTechStatRow {
+  technology_id: string
+  technologies: { name: string } | null
+}
+
+// ─── Constantes ───────────────────────────────────────────────────────────────
+
+const SUGGESTED_QUESTIONS = [
+  '¿Cuántos devs React hay en Quito?',
+  '¿Qué stack dominan los devs de Guayaquil?',
+  '¿Cuántos devs están disponibles para freelance?',
+]
+
+// ─── Página ───────────────────────────────────────────────────────────────────
+
+export default async function HomePage() {
+  const supabase = createServiceRoleClient()
+
+  // Últimos 6 perfiles públicos
+  const { data: rawProfiles } = await supabase
+    .from('profiles')
+    .select(
+      `
+      id, username, full_name, avatar_url, city,
+      years_experience, availability, created_at,
+      profile_technologies(technologies(id, name, category))
+    `
+    )
+    .eq('is_public', true)
+    .order('created_at', { ascending: false })
+    .limit(6)
+
+  // Stats: total devs + ciudades únicas
+  const { count: totalDevs } = await supabase
+    .from('profiles')
+    .select('id', { count: 'exact', head: true })
+    .eq('is_public', true)
+
+  // Ciudades únicas (usamos los perfiles ya cargados + query separada para el total)
+  const { data: allCities } = await supabase
+    .from('profiles')
+    .select('city')
+    .eq('is_public', true)
+
+  const uniqueCities = new Set((allCities ?? []).map((p) => p.city)).size
+
+  // Top 3 tecnologías más usadas
+  const { data: rawTechStats } = await supabase
+    .from('profile_technologies')
+    .select('technology_id, technologies(name)')
+
+  const techCount: Record<string, { name: string; count: number }> = {}
+  for (const pt of (rawTechStats ?? []) as unknown as RawTechStatRow[]) {
+    if (!pt.technologies?.name) continue
+    const id = pt.technology_id
+    if (!techCount[id]) {
+      techCount[id] = { name: pt.technologies.name, count: 0 }
+    }
+    techCount[id].count++
+  }
+  const topTechs = Object.values(techCount)
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 3)
+
+  // % devs disponibles (buscando_empleo + abierto_oportunidades + freelance)
+  const { count: availableDevs } = await supabase
+    .from('profiles')
+    .select('id', { count: 'exact', head: true })
+    .eq('is_public', true)
+    .in('availability', ['buscando_empleo', 'abierto_oportunidades', 'freelance'])
+
+  const availablePercent =
+    totalDevs && totalDevs > 0
+      ? Math.round(((availableDevs ?? 0) / totalDevs) * 100)
+      : 0
+
+  // Transformar perfiles recientes → DevCardProfile[]
+  const recentProfiles: DevCardProfile[] = (
+    (rawProfiles ?? []) as unknown as RawProfileRow[]
+  ).map((raw) => ({
+    id: raw.id,
+    username: raw.username,
+    full_name: raw.full_name,
+    avatar_url: raw.avatar_url ?? undefined,
+    city: raw.city,
+    years_experience: raw.years_experience ?? undefined,
+    availability: raw.availability as Availability,
+    technologies: raw.profile_technologies
+      .map((pt) => pt.technologies)
+      .filter((t): t is NonNullable<typeof t> => t !== null)
+      .map((t) => ({
+        id: t.id,
+        name: t.name,
+        category: t.category as TechCategory,
+      })),
+    created_at: raw.created_at,
+  }))
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-8">
-      <h1 className="text-4xl font-bold tracking-tight">DevMap Ecuador</h1>
-      <p className="mt-4 text-lg text-muted-foreground">Próximamente</p>
+    <main>
+      {/* ── Hero ─────────────────────────────────────────────────────────── */}
+      <section className="border-b bg-gradient-to-b from-muted/40 to-background">
+        <div className="container mx-auto max-w-6xl px-4 py-20 text-center">
+          <Badge variant="secondary" className="mb-4 text-xs">
+            Build with AI Challenge — GDG Quito 2026
+          </Badge>
+          <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+            El directorio del talento
+            <br />
+            <span className="text-primary">tech ecuatoriano</span>
+          </h1>
+          <p className="mx-auto mt-6 max-w-xl text-lg text-muted-foreground">
+            Encuentra desarrolladores ecuatorianos, explora sus stacks y
+            conecta con el ecosistema. Potenciado con inteligencia artificial.
+          </p>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <Link
+              href="/register"
+              className={cn(buttonVariants({ size: 'lg' }))}
+            >
+              Crear mi perfil
+            </Link>
+            <Link
+              href="/devs"
+              className={cn(buttonVariants({ variant: 'outline', size: 'lg' }))}
+            >
+              Explorar devs
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Ecosystem Stats ───────────────────────────────────────────────── */}
+      <section className="border-b bg-muted/20 py-14">
+        <div className="container mx-auto max-w-6xl px-4">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+            {/* Total devs */}
+            <div className="flex flex-col items-center gap-1 rounded-xl border bg-background p-6 text-center">
+              <Users className="h-6 w-6 text-primary" />
+              <p className="text-3xl font-bold">{totalDevs ?? 0}</p>
+              <p className="text-xs text-muted-foreground">Developers</p>
+            </div>
+
+            {/* Ciudades */}
+            <div className="flex flex-col items-center gap-1 rounded-xl border bg-background p-6 text-center">
+              <MapPin className="h-6 w-6 text-primary" />
+              <p className="text-3xl font-bold">{uniqueCities}</p>
+              <p className="text-xs text-muted-foreground">Ciudades</p>
+            </div>
+
+            {/* Top tecnologías */}
+            <div className="flex flex-col items-center gap-2 rounded-xl border bg-background p-6 text-center">
+              <TrendingUp className="h-6 w-6 text-primary" />
+              <div className="flex flex-wrap justify-center gap-1">
+                {topTechs.length > 0 ? (
+                  topTechs.map((t) => (
+                    <Badge key={t.name} variant="secondary" className="text-xs">
+                      {t.name}
+                    </Badge>
+                  ))
+                ) : (
+                  <p className="text-sm font-bold">—</p>
+                )}
+              </div>
+              <p className="text-xs text-muted-foreground">Top tecnologías</p>
+            </div>
+
+            {/* % disponibles */}
+            <div className="flex flex-col items-center gap-1 rounded-xl border bg-background p-6 text-center">
+              <Zap className="h-6 w-6 text-primary" />
+              <p className="text-3xl font-bold">{availablePercent}%</p>
+              <p className="text-xs text-muted-foreground">Disponibles</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Últimos perfiles ──────────────────────────────────────────────── */}
+      {recentProfiles.length > 0 && (
+        <section className="border-b py-14">
+          <div className="container mx-auto max-w-6xl px-4">
+            <div className="mb-6 flex items-center justify-between">
+              <h2 className="text-2xl font-bold tracking-tight">
+                Últimos perfiles
+              </h2>
+              <Link
+                href="/devs"
+                className={cn(
+                  buttonVariants({ variant: 'ghost', size: 'sm' }),
+                  'gap-1 text-muted-foreground'
+                )}
+              >
+                Ver todos
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {recentProfiles.map((profile) => (
+                <DevCard key={profile.id} profile={profile} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── Ask AI Preview ────────────────────────────────────────────────── */}
+      <section className="border-b py-14">
+        <div className="container mx-auto max-w-6xl px-4">
+          <div className="rounded-2xl border bg-gradient-to-br from-primary/5 to-background p-8 sm:p-10">
+            <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-10">
+              <div className="flex-1 space-y-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
+                  <Bot className="h-6 w-6 text-primary" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold tracking-tight">
+                    Pregúntale a la IA
+                  </h2>
+                  <p className="mt-2 text-muted-foreground">
+                    Nuestro asistente tiene acceso a los datos reales del
+                    directorio. Hazle preguntas sobre el ecosistema tech
+                    ecuatoriano y obtén respuestas al instante.
+                  </p>
+                </div>
+                <Link
+                  href="/ask"
+                  className={cn(buttonVariants({ size: 'sm' }), 'gap-2')}
+                >
+                  <Bot className="h-4 w-4" />
+                  Pregúntale a la IA
+                </Link>
+              </div>
+
+              {/* Preguntas de ejemplo */}
+              <div className="flex-1 space-y-2">
+                {SUGGESTED_QUESTIONS.map((q) => (
+                  <div
+                    key={q}
+                    className="rounded-xl border bg-background px-4 py-3 text-sm text-muted-foreground"
+                  >
+                    &ldquo;{q}&rdquo;
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA final ────────────────────────────────────────────────────── */}
+      <section className="py-20">
+        <div className="container mx-auto max-w-6xl px-4 text-center">
+          <h2 className="text-3xl font-bold tracking-tight">
+            ¿Eres dev ecuatoriano?
+          </h2>
+          <p className="mx-auto mt-3 max-w-md text-muted-foreground">
+            Súmate al mapa. Crea tu perfil gratuito y forma parte del
+            directorio del talento tech ecuatoriano.
+          </p>
+          <div className="mt-8">
+            <Link
+              href="/register"
+              className={cn(buttonVariants({ size: 'lg' }))}
+            >
+              Crear mi perfil gratis
+            </Link>
+          </div>
+        </div>
+      </section>
     </main>
   )
 }

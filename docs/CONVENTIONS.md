@@ -221,3 +221,32 @@ import { DevCard } from '../../components/dev-card'
 - **Siempre validar username** — solo `[a-z0-9-]`, lowercase, sin espacios
 - **El chat `/ask` no guarda historial** — cada sesión es fresh, sin persistencia en DB
 - **Las API routes usan `SUPABASE_SERVICE_ROLE_KEY`** — no la anon key, para bypass de RLS cuando se necesita contexto completo para la IA
+
+## Convenciones específicas de Next.js 16
+
+- **`proxy.ts` en lugar de `middleware.ts`** — Next.js 16 cambió la convención para el archivo de middleware de Clerk. Usar siempre `proxy.ts` en la raíz del proyecto
+- **`sonner` en lugar de shadcn toast** — el componente `toast` de shadcn está deprecado. Usar siempre `import { toast } from 'sonner'` en los componentes. Sonner ya está instalado como dependencia de shadcn/ui
+- **`Button asChild` no funciona** — para botones que envuelven links usar `<Link className={cn(buttonVariants({ variant }))} />` directamente, nunca `<Button asChild>`
+- **`lucide-react` no tiene iconos Github ni Linkedin** — usar `Link2` para LinkedIn y `Globe` para portfolio/sitio web como reemplazos
+- **Zod `.default('')` con `zodResolver` genera conflicto** — usar siempre `.optional()` en campos no requeridos y manejar los valores iniciales con `defaultValues` en `useForm`
+
+---
+
+## Convención de rutas
+
+Todas las rutas de la aplicación deben estar en **inglés**. El español queda exclusivamente para la UI (labels, textos, mensajes).
+
+```
+✅ Correcto        ❌ Incorrecto
+/register          /registro
+/devs              /devs  → ya correcto
+/ask               /ask   → ya correcto
+/sign-in           /iniciar-sesion
+/sign-up           /registrarse
+```
+
+Actualizar también las variables de entorno de Clerk:
+```bash
+NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/register
+NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/register
+```

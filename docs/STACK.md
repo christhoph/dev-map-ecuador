@@ -3,14 +3,14 @@
 ## Decisiones técnicas
 
 ### Frontend
-- **Framework:** Next.js 14+ (latest) con App Router y TypeScript
+- **Framework:** Next.js 16+ (latest) con App Router y TypeScript
 - **Por qué:** SSR para SEO, stack principal del dev, deploy trivial en Vercel
 - **Estilos:** Tailwind CSS — velocidad de desarrollo, resultado visual limpio sin CSS custom
 - **Componentes UI:** shadcn/ui — componentes accesibles, sin overhead, copiables al proyecto
 
 ### Autenticación
 - **Librería:** Clerk
-- **Por qué:** Setup en horas, UI de login/registro incluida, integración nativa con Next.js, free tier suficiente para MVP
+- **Por qué:** Setup en horas, UI de login/register incluida, integración nativa con Next.js, free tier suficiente para MVP
 - **Alternativa considerada:** NextAuth — descartado por mayor configuración requerida
 
 ### Base de datos
@@ -52,7 +52,7 @@ devmap-ecuador/
 │   │   └── page.tsx            ← Directorio con filtros
 │   ├── ask/
 │   │   └── page.tsx            ← Chat con IA
-│   ├── registro/
+│   ├── register/
 │   │   └── page.tsx            ← Formulario de perfil
 │   ├── api/
 │   │   ├── ask/
@@ -83,7 +83,7 @@ devmap-ecuador/
 ├── docs/                       ← Esta carpeta de .md
 ├── .env.local                  ← Variables locales (en .gitignore)
 ├── .env.example                ← Template de variables (en repo)
-└── middleware.ts               ← Protección de rutas con Clerk
+└── proxy.ts                ← Protección de rutas con Clerk (Next.js 16)
 ```
 
 ---
@@ -98,8 +98,8 @@ NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
 CLERK_SECRET_KEY=
 NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
 NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
-NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/registro
-NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/registro
+NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/register
+NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/register
 
 # Supabase
 NEXT_PUBLIC_SUPABASE_URL=

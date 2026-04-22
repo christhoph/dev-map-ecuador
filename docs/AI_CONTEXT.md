@@ -44,7 +44,7 @@ Lee `STACK.md` para estructura de carpetas y variables de entorno.
 1. **Seguir siempre `CONVENTIONS.md`** — nomenclatura, estructura de componentes, alias de imports
 2. **Nunca hardcodear ciudades** — usar `CITIES_ECUADOR` de `lib/constants.ts`
 3. **Usar `@/` para todos los imports internos** — nunca rutas relativas
-4. **Clerk protege solo `/registro` y `/api/ask`** — el resto es público
+4. **Clerk protege solo `/register` y `/api/ask`** — el resto es público
 5. **Las API Routes usan `SUPABASE_SERVICE_ROLE_KEY`** para obtener contexto completo para la IA
 6. **Nunca exponer el email del usuario** en perfiles públicos
 7. **Avatar fallback obligatorio** — iniciales si no hay foto
