@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useAuth, UserButton, SignInButton } from '@clerk/nextjs'
+import { useAuth, UserButton } from '@clerk/nextjs'
 import { Menu, X } from 'lucide-react'
 
 import { buttonVariants } from '@/components/ui/button'
@@ -67,12 +67,10 @@ export function Nav() {
               </>
             ) : (
               <>
-                <SignInButton mode="redirect">
-                  <button className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}>
-                    Iniciar sesión
-                  </button>
-                </SignInButton>
-                <Link href="/register" className={cn(buttonVariants({ size: 'sm' }))}>
+                <Link href="/sign-in" className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}>
+                  Iniciar sesión
+                </Link>
+                <Link href="/sign-up" className={cn(buttonVariants({ size: 'sm' }))}>
                   Únete
                 </Link>
               </>
@@ -125,16 +123,15 @@ export function Nav() {
                 </Link>
               ) : (
                 <>
-                  <SignInButton mode="redirect">
-                    <button
-                      onClick={closeMenu}
-                      className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'w-full')}
-                    >
-                      Iniciar sesión
-                    </button>
-                  </SignInButton>
                   <Link
-                    href="/register"
+                    href="/sign-in"
+                    onClick={closeMenu}
+                    className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'w-full text-center')}
+                  >
+                    Iniciar sesión
+                  </Link>
+                  <Link
+                    href="/sign-up"
                     onClick={closeMenu}
                     className={cn(buttonVariants({ size: 'sm' }), 'w-full text-center')}
                   >
