@@ -18,7 +18,7 @@ CREATE TABLE profiles (
   email TEXT NOT NULL,
   avatar_url TEXT,
   city TEXT NOT NULL,                       -- Ciudad en Ecuador (ej: 'Quito', 'Guayaquil')
-  bio TEXT,                                 -- Descripción corta, max 300 chars
+  bio TEXT,                                 -- Descripción corta, max 500 chars
   years_experience INT,                     -- Años de experiencia aproximados
   availability TEXT NOT NULL DEFAULT 'empleado',
     -- Valores: 'empleado' | 'freelance' | 'buscando_empleo' | 'abierto_oportunidades'
@@ -40,7 +40,7 @@ Catálogo de tecnologías disponibles. Precargado con las más comunes.
 CREATE TABLE technologies (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT UNIQUE NOT NULL,    -- Ej: 'React', 'Python', 'PostgreSQL'
-  category TEXT NOT NULL,       -- 'Frontend' | 'Backend' | 'Mobile' | 'DevOps' | 'Data' | 'Gaming' | 'Other'
+  category TEXT NOT NULL,       -- 'Frontend' | 'Backend' | 'Mobile' | 'DevOps' | 'Data' | 'Gaming' | 'Testing' | 'Other'
   created_at TIMESTAMPTZ DEFAULT now()
 );
 ```
@@ -84,6 +84,31 @@ INSERT INTO technologies (name, category) VALUES
 ('WebGL', 'Gaming'), ('Three.js', 'Gaming'),
 ('Phaser', 'Gaming'), ('Blender', 'Gaming'),
 ('C++', 'Gaming'), ('Lua', 'Gaming');
+
+-- Testing & QA
+INSERT INTO technologies (name, category) VALUES
+('Jest', 'Testing'), ('Cypress', 'Testing'),
+('Playwright', 'Testing'), ('Vitest', 'Testing'),
+('Testing Library', 'Testing'), ('Selenium', 'Testing'),
+('Postman', 'Testing'), ('k6', 'Testing'),
+('JUnit', 'Testing'), ('PyTest', 'Testing');
+
+-- Testing & QA adicionales
+INSERT INTO technologies (name, category) VALUES
+-- Mobile testing
+('Appium', 'Testing'), ('Detox', 'Testing'),
+-- API testing
+('REST Assured', 'Testing'), ('Insomnia', 'Testing'),
+('Newman', 'Testing'),
+-- Performance
+('JMeter', 'Testing'), ('Gatling', 'Testing'),
+-- BDD
+('Cucumber', 'Testing'), ('Gherkin', 'Testing'),
+-- Visual / accesibilidad
+('Percy', 'Testing'), ('Axe', 'Testing'),
+-- Gestión de QA
+('TestRail', 'Testing'), ('Zephyr', 'Testing'),
+('Xray', 'Testing');
 ```
 
 ---

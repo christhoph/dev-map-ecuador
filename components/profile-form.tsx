@@ -112,6 +112,7 @@ const TECH_CATEGORY_ORDER: TechCategory[] = [
   'DevOps',
   'Data',
   'Gaming',
+  'Testing',
   'Other',
 ]
 
@@ -569,7 +570,7 @@ export function ProfileForm({
       </section>
 
       {/* ── Submit ─────────────────────────────────────────────────────────── */}
-      <div className="pt-2">
+      <div className="pt-2 w-full flex justify-end">
         <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
           {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {isSubmitting ? 'Guardando...' : initialProfile ? 'Guardar cambios' : 'Crear perfil'}

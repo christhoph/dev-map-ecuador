@@ -113,7 +113,7 @@ Cada página describe su objetivo, datos que necesita, componentes principales y
 | Username | Text | Sí | Validar único, solo letras/números/guiones, min 3 chars |
 | Nombre completo | Text | Sí | |
 | Ciudad | Select | Sí | Lista de ciudades ecuatorianas principales |
-| Bio | Textarea | No | Max 300 caracteres con contador |
+| Bio | Textarea | No | Max 500 caracteres con contador |
 | Años de experiencia | Number | No | Min 0, max 40 |
 | Disponibilidad | Select | Sí | Las 4 opciones definidas en el modelo |
 | Stack tecnológico | Multi-select | Sí | Del catálogo de `technologies`, mín 1 |
@@ -124,7 +124,7 @@ Cada página describe su objetivo, datos que necesita, componentes principales y
 
 **Proyectos (sección separada dentro del mismo formulario):**
 - Hasta 3 proyectos
-- Cada uno: nombre, descripción (max 200 chars), URL
+- Cada uno: nombre, descripción (max 300 chars), URL
 - Botón para agregar/eliminar proyectos dinámicamente
 
 **Validación:**

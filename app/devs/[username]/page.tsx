@@ -63,6 +63,7 @@ const TECH_CATEGORY_ORDER: TechCategory[] = [
   'DevOps',
   'Data',
   'Gaming',
+  'Testing',
   'Other',
 ]
 

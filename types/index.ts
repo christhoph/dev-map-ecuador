@@ -11,6 +11,7 @@ export type TechCategory =
   | 'DevOps'
   | 'Data'
   | 'Gaming'
+  | 'Testing'
   | 'Other'
 
 export interface Technology {

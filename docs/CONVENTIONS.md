@@ -74,6 +74,7 @@ export type TechCategory =
   | 'DevOps'
   | 'Data'
   | 'Gaming'
+  | 'Testing'
   | 'Other'
 
 export interface Technology {
@@ -142,8 +143,8 @@ export const AVAILABILITY_COLORS: Record<string, string> = {
 }
 
 export const MAX_PROJECTS = 3
-export const MAX_BIO_CHARS = 300
-export const MAX_PROJECT_DESC_CHARS = 200
+export const MAX_BIO_CHARS = 500
+export const MAX_PROJECT_DESC_CHARS = 300
 export const MIN_USERNAME_LENGTH = 3
 export const MAX_USERNAME_LENGTH = 30
 ```
