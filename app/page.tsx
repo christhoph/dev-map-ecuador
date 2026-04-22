@@ -139,7 +139,7 @@ export default async function HomePage() {
   return (
     <main>
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
-      <section className="border-b bg-gradient-to-b from-muted/40 to-background">
+      <section className="border-b bg-gradient-to-b from-indigo-50 via-white to-blue-50">
         <div className="container mx-auto max-w-6xl px-4 py-20 text-center">
           <Badge variant="secondary" className="mb-4 text-xs">
             Build with AI Challenge — GDG Quito 2026
@@ -147,7 +147,9 @@ export default async function HomePage() {
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
             El directorio del talento
             <br />
-            <span className="text-primary">tech ecuatoriano</span>
+            <span className="bg-gradient-to-r from-indigo-600 to-blue-500 bg-clip-text text-transparent">
+              tech ecuatoriano
+            </span>
           </h1>
           <p className="mx-auto mt-6 max-w-xl text-lg text-muted-foreground">
             Encuentra desarrolladores ecuatorianos, explora sus stacks y
@@ -174,42 +176,42 @@ export default async function HomePage() {
       <section className="border-b bg-muted/20 py-14">
         <div className="container mx-auto max-w-6xl px-4">
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-            {/* Total devs */}
-            <div className="flex flex-col items-center gap-1 rounded-xl border bg-background p-6 text-center">
-              <Users className="h-6 w-6 text-primary" />
-              <p className="text-3xl font-bold">{totalDevs ?? 0}</p>
-              <p className="text-xs text-muted-foreground">Developers</p>
+            {/* Total devs — azul GDG */}
+            <div className="flex flex-col items-center gap-1 rounded-xl border border-blue-100 bg-blue-50 p-6 text-center">
+              <Users className="h-6 w-6 text-blue-600" />
+              <p className="text-3xl font-bold text-blue-900">{totalDevs ?? 0}</p>
+              <p className="text-xs text-blue-600/70">Developers</p>
             </div>
 
-            {/* Ciudades */}
-            <div className="flex flex-col items-center gap-1 rounded-xl border bg-background p-6 text-center">
-              <MapPin className="h-6 w-6 text-primary" />
-              <p className="text-3xl font-bold">{uniqueCities}</p>
-              <p className="text-xs text-muted-foreground">Ciudades</p>
+            {/* Ciudades — rojo GDG */}
+            <div className="flex flex-col items-center gap-1 rounded-xl border border-red-100 bg-red-50 p-6 text-center">
+              <MapPin className="h-6 w-6 text-red-500" />
+              <p className="text-3xl font-bold text-red-900">{uniqueCities}</p>
+              <p className="text-xs text-red-500/70">Ciudades</p>
             </div>
 
-            {/* Top tecnologías */}
-            <div className="flex flex-col items-center gap-2 rounded-xl border bg-background p-6 text-center">
-              <TrendingUp className="h-6 w-6 text-primary" />
+            {/* Top tecnologías — amarillo GDG */}
+            <div className="flex flex-col items-center gap-2 rounded-xl border border-yellow-100 bg-yellow-50 p-6 text-center">
+              <TrendingUp className="h-6 w-6 text-yellow-600" />
               <div className="flex flex-wrap justify-center gap-1">
                 {topTechs.length > 0 ? (
                   topTechs.map((t) => (
-                    <Badge key={t.name} variant="secondary" className="text-xs">
+                    <Badge key={t.name} className="border-yellow-200 bg-yellow-100 text-xs text-yellow-800 hover:bg-yellow-100">
                       {t.name}
                     </Badge>
                   ))
                 ) : (
-                  <p className="text-sm font-bold">—</p>
+                  <p className="text-sm font-bold text-yellow-900">—</p>
                 )}
               </div>
-              <p className="text-xs text-muted-foreground">Top tecnologías</p>
+              <p className="text-xs text-yellow-600/70">Top tecnologías</p>
             </div>
 
-            {/* % disponibles */}
-            <div className="flex flex-col items-center gap-1 rounded-xl border bg-background p-6 text-center">
-              <Zap className="h-6 w-6 text-primary" />
-              <p className="text-3xl font-bold">{availablePercent}%</p>
-              <p className="text-xs text-muted-foreground">Disponibles</p>
+            {/* % disponibles — verde GDG */}
+            <div className="flex flex-col items-center gap-1 rounded-xl border border-green-100 bg-green-50 p-6 text-center">
+              <Zap className="h-6 w-6 text-green-600" />
+              <p className="text-3xl font-bold text-green-900">{availablePercent}%</p>
+              <p className="text-xs text-green-600/70">Disponibles</p>
             </div>
           </div>
         </div>
@@ -260,19 +262,19 @@ export default async function HomePage() {
       </section>
 
       {/* ── Ask AI Preview ────────────────────────────────────────────────── */}
-      <section className="border-b py-14">
+      <section className="border-b bg-slate-900 py-14">
         <div className="container mx-auto max-w-6xl px-4">
-          <div className="rounded-2xl border bg-gradient-to-br from-primary/5 to-background p-8 sm:p-10">
+          <div className="rounded-2xl border border-slate-700 bg-slate-800/50 p-8 sm:p-10">
             <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-10">
               <div className="flex-1 space-y-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-                  <Bot className="h-6 w-6 text-primary" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-500/20">
+                  <Bot className="h-6 w-6 text-indigo-400" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold tracking-tight">
+                  <h2 className="text-2xl font-bold tracking-tight text-white">
                     Pregúntale a la IA
                   </h2>
-                  <p className="mt-2 text-muted-foreground">
+                  <p className="mt-2 text-slate-400">
                     Nuestro asistente tiene acceso a los datos reales del
                     directorio. Hazle preguntas sobre el ecosistema tech
                     ecuatoriano y obtén respuestas al instante.
@@ -280,7 +282,7 @@ export default async function HomePage() {
                 </div>
                 <Link
                   href="/ask"
-                  className={cn(buttonVariants({ size: 'sm' }), 'gap-2')}
+                  className={cn(buttonVariants({ size: 'sm' }), 'gap-2 bg-indigo-500 hover:bg-indigo-600 text-white')}
                 >
                   <Bot className="h-4 w-4" />
                   Pregúntale a la IA
@@ -292,7 +294,7 @@ export default async function HomePage() {
                 {SUGGESTED_QUESTIONS.map((q) => (
                   <div
                     key={q}
-                    className="rounded-xl border bg-background px-4 py-3 text-sm text-muted-foreground"
+                    className="rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm text-slate-400"
                   >
                     &ldquo;{q}&rdquo;
                   </div>
@@ -304,19 +306,19 @@ export default async function HomePage() {
       </section>
 
       {/* ── CTA final ────────────────────────────────────────────────────── */}
-      <section className="py-20">
+      <section className="bg-indigo-600 py-20">
         <div className="container mx-auto max-w-6xl px-4 text-center">
-          <h2 className="text-3xl font-bold tracking-tight">
+          <h2 className="text-3xl font-bold tracking-tight text-white">
             ¿Eres dev ecuatoriano?
           </h2>
-          <p className="mx-auto mt-3 max-w-md text-muted-foreground">
+          <p className="mx-auto mt-3 max-w-md text-indigo-200">
             Súmate al mapa. Crea tu perfil gratuito y forma parte del
             directorio del talento tech ecuatoriano.
           </p>
           <div className="mt-8">
             <Link
               href="/register"
-              className={cn(buttonVariants({ size: 'lg' }))}
+              className={cn(buttonVariants({ size: 'lg' }), 'bg-white text-indigo-600 hover:bg-indigo-50')}
             >
               Crear mi perfil gratis
             </Link>

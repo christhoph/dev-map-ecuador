@@ -41,8 +41,8 @@ function MessageBubble({ message }: { message: Message }) {
         className={cn(
           'flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs',
           isUser
-            ? 'bg-primary text-primary-foreground'
-            : 'bg-muted text-muted-foreground'
+            ? 'bg-indigo-600 text-white'
+            : 'bg-slate-200 text-slate-500'
         )}
       >
         {isUser ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
@@ -53,8 +53,8 @@ function MessageBubble({ message }: { message: Message }) {
         className={cn(
           'max-w-[80%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed',
           isUser
-            ? 'rounded-tr-sm bg-primary text-primary-foreground'
-            : 'rounded-tl-sm bg-muted text-foreground'
+            ? 'rounded-tr-sm bg-indigo-600 text-white'
+            : 'rounded-tl-sm bg-slate-100 text-slate-800'
         )}
       >
         {message.content}
@@ -196,7 +196,7 @@ export function AskChat() {
                   type="button"
                   onClick={() => sendMessage(q)}
                   disabled={isLoading || isStreaming}
-                  className="rounded-full border bg-background px-4 py-2 text-sm text-muted-foreground transition-colors hover:border-primary hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
+                  className="rounded-full border border-indigo-200 bg-white px-4 py-2 text-sm text-indigo-700 transition-colors hover:bg-indigo-50 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {q}
                 </button>
@@ -228,7 +228,7 @@ export function AskChat() {
             onChange={(e) => setInput(e.target.value)}
             placeholder="Escribe tu pregunta..."
             disabled={isLoading || isStreaming}
-            className="flex-1 rounded-full border bg-muted/50 px-4 py-2.5 text-sm outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-primary focus:bg-background disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex-1 rounded-full border bg-muted/50 px-4 py-2.5 text-sm outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:bg-background disabled:cursor-not-allowed disabled:opacity-50"
           />
           <Button
             type="submit"

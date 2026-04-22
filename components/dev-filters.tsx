@@ -95,17 +95,17 @@ export function DevFilters({ initialProfiles, technologies }: DevFiltersProps) {
     <div className="space-y-6">
 
       {/* ── Panel de filtros ───────────────────────────────────────────────── */}
-      <section className="rounded-xl border bg-card p-5 space-y-5">
+      <section className="rounded-xl border border-slate-200 bg-slate-50 p-5 space-y-5">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-sm font-medium">
-            <SlidersHorizontal className="h-4 w-4" />
+          <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
+            <SlidersHorizontal className="h-4 w-4 text-indigo-500" />
             Filtros
           </div>
           {hasActiveFilters && (
             <button
               type="button"
               onClick={clearFilters}
-              className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+              className="flex items-center gap-1 text-xs text-indigo-600 hover:text-indigo-700 transition-colors"
             >
               <X className="h-3.5 w-3.5" />
               Limpiar filtros
@@ -115,7 +115,7 @@ export function DevFilters({ initialProfiles, technologies }: DevFiltersProps) {
 
         {/* ── Ciudad ────────────────────────────────────────────────────────── */}
         <div className="space-y-2">
-          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+          <p className="text-xs font-medium text-slate-700 uppercase tracking-wide">
             Ciudad
           </p>
           <Select
@@ -138,7 +138,7 @@ export function DevFilters({ initialProfiles, technologies }: DevFiltersProps) {
 
         {/* ── Disponibilidad ────────────────────────────────────────────────── */}
         <div className="space-y-2">
-          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+          <p className="text-xs font-medium text-slate-700 uppercase tracking-wide">
             Disponibilidad
           </p>
           <div className="flex flex-wrap gap-2">
@@ -151,7 +151,7 @@ export function DevFilters({ initialProfiles, technologies }: DevFiltersProps) {
                   onClick={() => toggleAvailability(avail)}
                   className={cn(
                     'transition-all',
-                    active ? 'ring-2 ring-primary ring-offset-1' : ''
+                    active ? 'ring-2 ring-indigo-500 ring-offset-1' : ''
                   )}
                 >
                   <Badge
@@ -169,14 +169,14 @@ export function DevFilters({ initialProfiles, technologies }: DevFiltersProps) {
         {/* ── Tecnología ────────────────────────────────────────────────────── */}
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+            <p className="text-xs font-medium text-slate-700 uppercase tracking-wide">
               Tecnología
             </p>
             {selectedTechIds.length > 0 && (
               <button
                 type="button"
                 onClick={() => setSelectedTechIds([])}
-                className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                className="text-xs text-indigo-600 hover:text-indigo-700 transition-colors"
               >
                 Quitar todas ({selectedTechIds.length})
               </button>
@@ -192,7 +192,7 @@ export function DevFilters({ initialProfiles, technologies }: DevFiltersProps) {
                   onClick={() => toggleTech(tech.id)}
                   className={cn(
                     'transition-all',
-                    selected ? 'ring-2 ring-primary ring-offset-1' : ''
+                    selected ? 'ring-2 ring-indigo-500 ring-offset-1' : ''
                   )}
                 >
                   <Badge
@@ -210,14 +210,16 @@ export function DevFilters({ initialProfiles, technologies }: DevFiltersProps) {
 
       {/* ── Contador de resultados ─────────────────────────────────────────── */}
       <div className="flex items-center justify-between">
-        <p className="text-sm text-muted-foreground">
-          {filteredProfiles.length === 0
-            ? 'Sin resultados'
-            : filteredProfiles.length === 1
-            ? '1 developer'
-            : `${filteredProfiles.length} developers`}
+        <p className="text-sm text-slate-500">
+          <span className="text-indigo-600 font-semibold">
+            {filteredProfiles.length === 0
+              ? 'Sin resultados'
+              : filteredProfiles.length === 1
+              ? '1 developer'
+              : `${filteredProfiles.length} developers`}
+          </span>
           {hasActiveFilters && (
-            <span className="ml-1 text-muted-foreground/60">
+            <span className="ml-1 text-slate-400">
               (de {initialProfiles.length} totales)
             </span>
           )}

@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
 export default function NotFound() {
   return (
     <main className="flex flex-1 flex-col items-center justify-center px-4 py-20 text-center">
-      <p className="text-6xl font-bold text-muted-foreground/30">404</p>
+      <p className="text-8xl font-bold bg-gradient-to-r from-indigo-600 to-blue-500 bg-clip-text text-transparent">404</p>
       <h1 className="mt-4 text-2xl font-bold tracking-tight">
         Página no encontrada
       </h1>

@@ -9,6 +9,12 @@ export function Footer() {
 
   return (
     <footer className="border-t bg-neutral-50 py-4 text-center text-xs text-neutral-500">
+      <div className="mb-2 flex items-center justify-center gap-1.5">
+        <span className="h-2 w-2 rounded-full bg-[#4285F4]" aria-hidden="true" />
+        <span className="h-2 w-2 rounded-full bg-[#EA4335]" aria-hidden="true" />
+        <span className="h-2 w-2 rounded-full bg-[#FBBC04]" aria-hidden="true" />
+        <span className="h-2 w-2 rounded-full bg-[#34A853]" aria-hidden="true" />
+      </div>
       <p>
         Desarrollado por{' '}
         <a

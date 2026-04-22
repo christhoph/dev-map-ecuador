@@ -184,13 +184,13 @@ export default async function DevProfilePage({ params }: PageProps) {
         <div className="flex-1 min-w-0">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
-              <h1 className="text-2xl font-bold tracking-tight">{profileData.full_name}</h1>
-              <p className="text-muted-foreground text-sm">@{profileData.username}</p>
+              <h1 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-indigo-600 to-blue-500 bg-clip-text text-transparent">{profileData.full_name}</h1>
+              <p className="text-indigo-500 text-sm">@{profileData.username}</p>
             </div>
             {isOwner && (
               <Link
                 href="/register"
-                className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}
+                className={cn(buttonVariants({ size: 'sm' }), 'bg-indigo-600 hover:bg-indigo-700 text-white')}
               >
                 <Pencil className="h-3.5 w-3.5 mr-1.5" />
                 Editar perfil
@@ -229,7 +229,7 @@ export default async function DevProfilePage({ params }: PageProps) {
                   href={profileData.github_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-indigo-600 transition-colors"
                 >
                   <Link2 className="h-4 w-4" />
                   GitHub
@@ -240,7 +240,7 @@ export default async function DevProfilePage({ params }: PageProps) {
                   href={profileData.linkedin_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-indigo-600 transition-colors"
                 >
                   <Link2 className="h-4 w-4" />
                   LinkedIn
@@ -251,7 +251,7 @@ export default async function DevProfilePage({ params }: PageProps) {
                   href={profileData.portfolio_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-indigo-600 transition-colors"
                 >
                   <Globe className="h-4 w-4" />
                   Portfolio
@@ -277,12 +277,12 @@ export default async function DevProfilePage({ params }: PageProps) {
           <div className="space-y-3">
             {Object.entries(techsByCategory).map(([category, techs]) => (
               <div key={category} className="flex flex-wrap items-center gap-x-3 gap-y-2">
-                <span className="text-sm font-medium text-muted-foreground w-20 shrink-0">
+                <span className="text-xs font-semibold text-indigo-600 uppercase tracking-wide w-20 shrink-0">
                   {category}
                 </span>
                 <div className="flex flex-wrap gap-1.5">
                   {techs!.map((tech) => (
-                    <Badge key={tech.id} variant="secondary">
+                    <Badge key={tech.id} variant="secondary" className="bg-slate-100 text-slate-700 hover:bg-indigo-50 hover:text-indigo-700 transition-colors">
                       {tech.name}
                     </Badge>
                   ))}
@@ -299,7 +299,7 @@ export default async function DevProfilePage({ params }: PageProps) {
           <h2 className="text-lg font-semibold mb-4">Proyectos destacados</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {profileData.projects.map((project) => (
-              <Card key={project.id} className="flex flex-col">
+              <Card key={project.id} className="flex flex-col border-l-4 border-l-indigo-500">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-base flex items-start justify-between gap-2">
                     <span>{project.name}</span>

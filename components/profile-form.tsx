@@ -227,7 +227,7 @@ export function ProfileForm({
 
       {/* ── Información básica ─────────────────────────────────────────────── */}
       <section className="space-y-5">
-        <h2 className="text-xl font-semibold border-b pb-2">Información básica</h2>
+        <h2 className="text-xl font-semibold text-indigo-600 border-b border-indigo-100 pb-2">Información básica</h2>
 
         {/* Username */}
         <div className="space-y-1.5">
@@ -384,7 +384,7 @@ export function ProfileForm({
 
       {/* ── Links sociales ─────────────────────────────────────────────────── */}
       <section className="space-y-5">
-        <h2 className="text-xl font-semibold border-b pb-2">Links sociales</h2>
+        <h2 className="text-xl font-semibold text-indigo-600 border-b border-indigo-100 pb-2">Links sociales</h2>
 
         <div className="space-y-1.5">
           <label className="text-sm font-medium">GitHub</label>
@@ -426,7 +426,7 @@ export function ProfileForm({
       {/* ── Stack tecnológico ──────────────────────────────────────────────── */}
       <section className="space-y-4">
         <div className="border-b pb-2">
-          <h2 className="text-xl font-semibold">Stack tecnológico</h2>
+          <h2 className="text-xl font-semibold text-indigo-600">Stack tecnológico</h2>
           <p className="text-sm text-muted-foreground mt-0.5">
             Selecciona las tecnologías con las que trabajas <span className="text-destructive">*</span>
           </p>
@@ -434,7 +434,7 @@ export function ProfileForm({
 
         {Object.entries(techsByCategory).map(([category, techs]) => (
           <div key={category} className="space-y-2">
-            <p className="text-sm font-medium text-muted-foreground">{category}</p>
+            <p className="text-sm font-medium text-slate-700">{category}</p>
             <div className="flex flex-wrap gap-2">
               {techs!.map((tech) => {
                 const selected = (watchedTechs ?? []).includes(tech.id)
@@ -470,7 +470,7 @@ export function ProfileForm({
       <section className="space-y-4">
         <div className="flex items-center justify-between border-b pb-2">
           <div>
-            <h2 className="text-xl font-semibold">Proyectos destacados</h2>
+            <h2 className="text-xl font-semibold text-indigo-600">Proyectos destacados</h2>
             <p className="text-sm text-muted-foreground mt-0.5">
               Hasta {MAX_PROJECTS} proyectos
             </p>
@@ -481,6 +481,7 @@ export function ProfileForm({
               variant="outline"
               size="sm"
               onClick={() => append({ name: '', description: '', url: '' })}
+              className="border-indigo-300 text-indigo-600 hover:bg-indigo-50"
             >
               <Plus className="h-4 w-4 mr-1.5" />
               Agregar proyecto
@@ -495,7 +496,7 @@ export function ProfileForm({
         )}
 
         {fields.map((field, index) => (
-          <div key={field.id} className="border rounded-lg p-4 space-y-3 bg-muted/30">
+          <div key={field.id} className="border border-slate-200 rounded-lg p-4 space-y-3 bg-slate-50">
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium">Proyecto {index + 1}</span>
               <Button

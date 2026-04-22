@@ -31,7 +31,9 @@ export function Nav() {
           onClick={closeMenu}
           className="shrink-0 text-sm font-bold tracking-tight transition-opacity hover:opacity-80"
         >
-          DevMap<span className="text-primary"> Ecuador</span>
+          <span className="bg-gradient-to-r from-indigo-600 to-blue-500 bg-clip-text text-transparent">
+            DevMap Ecuador
+          </span>
         </Link>
 
         {/* Desktop nav */}
@@ -43,8 +45,8 @@ export function Nav() {
               className={cn(
                 buttonVariants({ variant: 'ghost', size: 'sm' }),
                 pathname === href
-                  ? 'text-foreground'
-                  : 'text-muted-foreground hover:text-foreground'
+                  ? 'text-indigo-600 font-medium'
+                  : 'text-slate-600 hover:text-indigo-600 transition-colors'
               )}
             >
               {label}

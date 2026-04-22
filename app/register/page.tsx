@@ -89,10 +89,10 @@ export default async function RegistroPage() {
   return (
     <main className="container mx-auto max-w-2xl py-12 px-4">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">
+        <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-indigo-600 to-blue-500 bg-clip-text text-transparent">
           {initialProfile ? 'Editar perfil' : 'Crea tu perfil'}
         </h1>
-        <p className="mt-2 text-muted-foreground">
+        <p className="mt-2 text-slate-500">
           {initialProfile
             ? 'Mantén tu información actualizada para el directorio.'
             : 'Sé parte del mapa del talento tech ecuatoriano.'}
