@@ -58,8 +58,8 @@ function MessageBubble({ message }: { message: Message }) {
           isUser
             ? 'rounded-tr-sm bg-indigo-600 text-white'
             : isError
-            ? 'rounded-tl-sm bg-red-50 text-red-700 border border-red-200'
-            : 'rounded-tl-sm bg-slate-100 text-slate-800'
+              ? 'rounded-tl-sm bg-red-50 text-red-700 border border-red-200'
+              : 'rounded-tl-sm bg-slate-100 text-slate-800'
         )}
       >
         {message.content}
@@ -205,7 +205,7 @@ export function AskChat() {
   return (
     <div className="flex h-[calc(100%-5.125rem)] flex-col">
       {/* ── Área de mensajes ──────────────────────────────────────────────── */}
-      <div className="flex-1 overflow-y-auto overflow-x-hidden px-4 py-6">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden px-4 py-6 max-w-4xl mx-auto">
         {isEmpty ? (
           /* Estado vacío — sugerencias */
           <div className="flex h-full flex-col items-center justify-center gap-6 text-center">
@@ -222,7 +222,7 @@ export function AskChat() {
               </p>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {SUGGESTED_QUESTIONS.map((q) => (
                 <button
                   key={q}
