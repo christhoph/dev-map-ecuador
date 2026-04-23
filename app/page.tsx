@@ -1,8 +1,10 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Bot, MapPin, Users, Zap, TrendingUp, ArrowRight, Bug, Link2 } from 'lucide-react'
+import { auth } from '@clerk/nextjs/server'
 
 import { DevCard } from '@/components/dev-card'
+import { CTASection } from '@/components/cta-section'
 import { buttonVariants } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { createServiceRoleClient } from '@/lib/supabase/server'
@@ -55,6 +57,24 @@ const SUGGESTED_QUESTIONS = [
 
 export default async function HomePage() {
   const supabase = createServiceRoleClient()
+
+  let userId: string | null = null
+  try {
+    const session = await auth()
+    userId = session.userId
+  } catch {
+    // treat as unauthenticated
+  }
+
+  let ctaProfile: { username: string } | null = null
+  if (userId) {
+    const { data } = await supabase
+      .from('profiles')
+      .select('username')
+      .eq('clerk_user_id', userId)
+      .single()
+    ctaProfile = data
+  }
 
   // Últimos 6 perfiles públicos
   const { data: rawProfiles } = await supabase
@@ -321,25 +341,7 @@ export default async function HomePage() {
       </div>
 
       {/* ── CTA final ────────────────────────────────────────────────────── */}
-      <section className="bg-indigo-600 py-20">
-        <div className="container mx-auto max-w-6xl px-4 text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-white">
-            ¿Eres dev ecuatoriano?
-          </h2>
-          <p className="mx-auto mt-3 max-w-md text-indigo-200">
-            Súmate al mapa. Crea tu perfil gratuito y forma parte del
-            directorio del talento tech ecuatoriano.
-          </p>
-          <div className="mt-8">
-            <Link
-              href="/register"
-              className={cn(buttonVariants({ variant: 'outline', size: 'lg' }))}
-            >
-              Crear mi perfil gratis
-            </Link>
-          </div>
-        </div>
-      </section>
+      <CTASection profile={ctaProfile} isAuthenticated={!!userId} />
     </main>
   )
 }
