@@ -1,11 +1,15 @@
+import type { ElementType } from 'react'
 import { notFound } from 'next/navigation'
 import { auth } from '@clerk/nextjs/server'
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { Globe, MapPin, Briefcase, Pencil, ExternalLink, Link2 } from 'lucide-react'
+import {
+  Globe, MapPin, Briefcase, Pencil, ExternalLink, Link2,
+  Monitor, Server, Smartphone, Cloud, Database, FlaskConical,
+  Palette, Layers, Gamepad2, Code2,
+} from 'lucide-react'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
 import { buttonVariants } from '@/components/ui/button'
 import {
   Card,
@@ -77,6 +81,19 @@ const TECH_CATEGORY_ORDER: TechCategory[] = [
   'Testing',
   'Other',
 ]
+
+const CATEGORY_ICONS: Record<TechCategory, ElementType> = {
+  Frontend: Monitor,
+  Backend: Server,
+  Mobile: Smartphone,
+  DevOps: Cloud,
+  Data: Database,
+  Testing: FlaskConical,
+  Design: Palette,
+  'Design System': Layers,
+  Gaming: Gamepad2,
+  Other: Code2,
+}
 
 // ─── generateMetadata ─────────────────────────────────────────────────────────
 
@@ -188,7 +205,7 @@ export default async function DevProfilePage({ params }: PageProps) {
     profileData.github_url || profileData.linkedin_url || profileData.portfolio_url
 
   return (
-    <main className="container mx-auto max-w-3xl py-10 px-4 space-y-8">
+    <main className="container mx-auto max-w-3xl py-10 px-4 space-y-8 min-h-[calc(100dvh-10rem)]">
 
       {/* ── Header ─────────────────────────────────────────────────────────── */}
       <section className="flex flex-col sm:flex-row gap-6 items-start">
@@ -292,21 +309,31 @@ export default async function DevProfilePage({ params }: PageProps) {
       {technologies.length > 0 && (
         <section>
           <h2 className="text-lg font-semibold mb-4">Stack tecnológico</h2>
-          <div className="space-y-3">
-            {Object.entries(techsByCategory).map(([category, techs]) => (
-              <div key={category} className="flex flex-wrap items-center gap-x-3 gap-y-2">
-                <span className="text-xs font-semibold text-indigo-600 uppercase tracking-wide w-20 shrink-0">
-                  {category}
-                </span>
-                <div className="flex flex-wrap gap-1.5">
-                  {techs!.map((tech) => (
-                    <Badge key={tech.id} variant="secondary" className="bg-slate-100 text-slate-700 hover:bg-indigo-50 hover:text-indigo-700 transition-colors">
-                      {tech.name}
-                    </Badge>
-                  ))}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {Object.entries(techsByCategory).map(([category, techs]) => {
+              const Icon = CATEGORY_ICONS[category as TechCategory] ?? Code2
+              return (
+                <div
+                  key={category}
+                  className="bg-slate-50 border border-slate-200 rounded-xl p-4"
+                >
+                  <div className="flex items-center gap-1.5 text-xs font-semibold text-indigo-600 uppercase tracking-wide mb-2">
+                    <Icon className="h-3.5 w-3.5 shrink-0" />
+                    {category}
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {techs!.map((tech) => (
+                      <span
+                        key={tech.id}
+                        className="bg-white border border-slate-200 text-slate-700 text-xs rounded-full px-2.5 py-1"
+                      >
+                        {tech.name}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </section>
       )}
