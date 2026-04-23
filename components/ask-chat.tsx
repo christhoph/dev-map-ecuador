@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect, FormEvent } from 'react'
+import { useSearchParams, useRouter } from 'next/navigation'
 import { SendHorizontal, Bot, User, Loader2 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
@@ -87,6 +88,8 @@ function TypingIndicator() {
 // ─── Componente principal ─────────────────────────────────────────────────────
 
 export function AskChat() {
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -178,6 +181,19 @@ export function AskChat() {
       inputRef.current?.focus()
     }
   }
+
+  useEffect(() => {
+    const q = searchParams.get('q')
+    if (q && messages.length === 0) {
+      setInput(q)
+      const timer = setTimeout(() => {
+        sendMessage(q)
+        router.replace('/ask', { scroll: false })
+      }, 500)
+      return () => clearTimeout(timer)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams, router])
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()

@@ -292,12 +292,14 @@ export default async function HomePage() {
               {/* Preguntas de ejemplo */}
               <div className="flex-1 space-y-2">
                 {SUGGESTED_QUESTIONS.map((q) => (
-                  <div
+                  <Link
                     key={q}
-                    className="rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm text-slate-400 cursor-pointer"
+                    href={`/ask?q=${encodeURIComponent(q)}`}
+                    className="group flex items-center justify-between cursor-pointer bg-slate-700/50 hover:bg-indigo-500/20 hover:border-indigo-400 border border-slate-600 text-slate-300 hover:text-indigo-300 transition-all duration-200 rounded-lg px-4 py-3 text-sm"
                   >
-                    &ldquo;{q}&rdquo;
-                  </div>
+                    <span>&ldquo;{q}&rdquo;</span>
+                    <ArrowRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </Link>
                 ))}
               </div>
             </div>

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 
 import { AskChat } from '@/components/ask-chat'
 
@@ -22,7 +23,9 @@ export default function AskPage() {
         </div>
       </div>
 
-      <AskChat />
+      <Suspense fallback={<div className="flex-1" />}>
+        <AskChat />
+      </Suspense>
     </div>
   )
 }
