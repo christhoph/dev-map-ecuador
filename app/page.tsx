@@ -333,7 +333,7 @@ export default async function HomePage() {
           <div className="mt-8">
             <Link
               href="/register"
-              className={cn(buttonVariants({ size: 'lg' }), 'bg-white text-indigo-600 hover:bg-indigo-50')}
+              className={cn(buttonVariants({ variant: 'outline', size: 'lg' }))}
             >
               Crear mi perfil gratis
             </Link>
